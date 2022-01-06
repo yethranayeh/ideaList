@@ -9,7 +9,7 @@ export default class Todo {
 		this.notes = notes;
 		this.checklist = checklist;
 		this.isComplete = false;
-		this.project = undefined;
+		this.category = "default";
 	}
 
 	markAsComplete() {
