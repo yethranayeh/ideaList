@@ -1,4 +1,4 @@
 /** @format */
 
 import PubSub from "pubsub-js";
-import Todo from "./todo.js";
+import App from "./app.js";

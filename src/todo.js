@@ -8,5 +8,15 @@ export default class Todo {
 		this.priority = priority;
 		this.notes = notes;
 		this.checklist = checklist;
+		this.isComplete = false;
+		this.project = undefined;
+	}
+
+	markAsComplete() {
+		this.isComplete = true;
+	}
+
+	changePriority(priority) {
+		this.priority = priority;
 	}
 }
