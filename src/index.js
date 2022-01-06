@@ -1,3 +1,3 @@
 /** @format */
 
-alert("watching");
+import PubSub from "pubsub-js";
