@@ -4,10 +4,6 @@ import Todo from "./todo.js";
 export { App as default };
 
 const App = {
-	init: function () {
-		this.DOM = document.querySelector("body");
-		this.initTodoList();
-	},
 	createTodo: function (category, ...args) {
 		// If there is no category provided, use default
 		category = category ? category : "default";

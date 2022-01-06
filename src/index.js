@@ -2,8 +2,7 @@
 
 import PubSub from "pubsub-js";
 import App from "./app.js";
+import DOM from "./DOM.js";
 
-// Prominent page elements
-const DOM = document.querySelector("body");
-
-App.init();
+App.initTodoList();
+DOM.init();
