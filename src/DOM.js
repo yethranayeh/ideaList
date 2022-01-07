@@ -3,10 +3,11 @@
 export { DOM as default };
 
 const DOM = {
-	init: function () {
+	init: function (date) {
 		this.body = document.querySelector("body");
 		this.contentArea = this.body.querySelector("#content");
 		this.contentArea.appendChild(this.navbar.self);
+		this.navbar.date.textContent = date;
 	},
 	initInterface: function () {
 		return;
@@ -37,8 +38,41 @@ const DOM = {
 			return svg;
 		})();
 
-		navbar.appendChild(hamburger);
+		// Date
+		const date = (function () {
+			const today = document.createElement("span");
+			today.classList.add("display-date");
+			today.textContent = "test";
 
-		return { self: navbar, hamburger: hamburger };
+			return today;
+		})();
+
+		// Search Button
+		const search = (function () {
+			const searchBox = document.createElement("div");
+			searchBox.classList.add("search-box");
+
+			const form = document.createElement("form");
+			form.setAttribute("name", "search");
+
+			const input = document.createElement("input");
+			input.classList.add("input");
+			input.setAttribute("type", "text");
+			input.setAttribute("name", "txt");
+			form.appendChild(input);
+			searchBox.appendChild(form);
+
+			const btn = document.createElement("i");
+			btn.classList.add("fas", "fa-search");
+			searchBox.appendChild(btn);
+
+			return { box: searchBox, button: btn, input: input };
+		})();
+
+		navbar.appendChild(hamburger);
+		navbar.appendChild(date);
+		navbar.appendChild(search.box);
+
+		return { self: navbar, hamburger: hamburger, date: date, search: search };
 	})()
 };
