@@ -9,7 +9,11 @@ export default class Todo {
 		this.notes = notes;
 		this.checklist = checklist;
 		this.isComplete = false;
-		this.category = "default";
+		this.categories = [];
+	}
+
+	addCategory(category) {
+		this.categories.push(category.toString());
 	}
 
 	markAsComplete() {

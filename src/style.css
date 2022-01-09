@@ -25,6 +25,7 @@ body {
 	background: -webkit-linear-gradient(top left, var(--space-cadet), var(--russian-violet));
 	background: -moz-linear-gradient(top left, var(--space-cadet), var(--russian-violet));
 	background: linear-gradient(to bottom right, var(--space-cadet), var(--russian-violet));
+	overflow: hidden;
 }
 
 /* Navbar */
@@ -32,8 +33,13 @@ nav {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	/* box-shadow: 0px 1px 2px var(--oxford-blue); */
 	width: 100vw;
+	position: fixed;
+	top: 0;
+	background: linear-gradient(to bottom right, var(--space-cadet), var(--russian-violet)) no-repeat center fixed;
+	background-size: cover;
+	box-shadow: 0px 1px 2px var(--purpureus);
+	z-index: 99999;
 }
 
 /* --Hamburger */
@@ -99,8 +105,8 @@ nav {
 
 .input {
 	padding: 10px;
-	width: 70px;
-	height: 70px;
+	width: 50px;
+	height: 50px;
 	background: none;
 	border: 2px solid var(--light-gray);
 	border-radius: 10px;
@@ -127,7 +133,7 @@ nav {
 	left: 50%;
 	/* right: 15px; */
 	transform: translate(-50%, -50%);
-	font-size: 26px;
+	font-size: 22px;
 	color: var(--purpureus);
 	transition: 0.2s;
 }
@@ -135,4 +141,84 @@ nav {
 .search-box.active i {
 	opacity: 0;
 	z-index: -1;
+}
+
+/* Container for Sidebar and Main */
+.container {
+	margin-top: var(--nav-height);
+	margin-bottom: 1em;
+	min-height: calc(100vh - var(--nav-height));
+}
+
+/* Sidebar */
+
+aside {
+	max-height: calc(100vh - var(--nav-height));
+	min-height: calc(99vh - var(--nav-height));
+	display: flex;
+	flex-direction: column;
+	padding: 20px;
+	overflow-y: auto;
+
+	background: linear-gradient(to bottom right, var(--space-cadet), var(--russian-violet)) no-repeat center fixed;
+	background-size: cover;
+
+	color: var(--light-gray);
+	transform: translateX(-100%);
+	opacity: 0;
+	transition: transform 250ms ease-in-out, opacity 250ms ease-out;
+}
+
+aside.active {
+	transform: translateX(0);
+	opacity: 100%;
+}
+
+aside section {
+	margin-bottom: 20px;
+}
+
+aside h2 {
+	font-size: 1.8em;
+	margin-bottom: 0.5em;
+}
+
+aside li {
+	display: inline-block;
+	padding: 0.2em 0.4em;
+	margin-right: 0.4em;
+	margin-bottom: 0.4em;
+	cursor: pointer;
+
+	font-size: 1.2em;
+	color: var(--china-rose);
+
+	background-color: var(--oxford-blue);
+
+	border: 2px solid var(--china-rose);
+	border-radius: 10px;
+}
+
+aside li::before {
+	font-family: "Font Awesome 5 Free";
+	font-weight: 900;
+	font-size: 0.8em;
+	color: var(--light-gray);
+	margin-right: 5px;
+}
+
+aside li.category::before {
+	content: "\f292";
+}
+
+aside li.day::before {
+	content: "\f783";
+}
+
+aside li.week::before {
+	content: "\f784";
+}
+
+aside li.month::before {
+	content: "\f133";
 }

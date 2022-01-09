@@ -7,24 +7,18 @@ import format from "date-fns/format";
 import App from "./app.js";
 import DOM from "./DOM.js";
 
-App.initTodoList();
-let today = format(new Date(), "cccc, d");
-DOM.init(today);
+App.init();
 
-// Hamburger menu click listener
+let today = format(new Date(), "cccc, d");
+DOM.init(today, App.getTodoList());
+
+// NAVBAR
+// -Hamburger menu click listener
 DOM.navbar.hamburger.addEventListener("click", (e) => {
-	DOM.navbar.hamburger.classList.toggle("active");
-	if (DOM.navbar.hamburger.classList.contains("active")) {
-		// Active
-		return;
-	} else {
-		// Not Active
-		return;
-	}
+	PubSub.publish("hamClicked");
 });
 
-// Search box
-
+// -Search box
 // --click listener
 DOM.navbar.search.box.addEventListener("click", (e) => {
 	DOM.navbar.search.box.classList.add("active");
@@ -41,11 +35,24 @@ DOM.navbar.search.box.addEventListener("focusout", () => {
 	PubSub.publish("searchFocusOut");
 });
 
-// Change display state of Date
+// -Change display state of Date
 PubSub.subscribe("searchFocused", () => {
 	DOM.navbar.date.classList.add("fade-out");
 });
 
 PubSub.subscribe("searchFocusOut", () => {
 	DOM.navbar.date.classList.remove("fade-out");
+});
+
+// Container
+DOM.mainArea.style.cssText = `--nav-height: calc(${DOM.navbar.self.offsetHeight}px)`;
+
+// Event handlers
+PubSub.subscribe("hamClicked", () => {
+	DOM.navbar.hamburger.classList.toggle("active");
+	if (DOM.navbar.hamburger.classList.contains("active")) {
+		DOM.sidebar.self.classList.add("active");
+	} else {
+		DOM.sidebar.self.classList.remove("active");
+	}
 });

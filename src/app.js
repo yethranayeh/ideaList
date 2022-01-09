@@ -4,6 +4,9 @@ import Todo from "./todo.js";
 export { App as default };
 
 const App = {
+	init: function () {
+		this.initTodoList();
+	},
 	createTodo: function (category, ...args) {
 		// If there is no category provided, use default
 		category = category ? category : "default";
@@ -15,7 +18,7 @@ const App = {
 
 		// Create Todo instance
 		let todo = new Todo(...args);
-		todo.category = category;
+		todo.categories.push(category);
 
 		// Push it to its category or default
 		this.todoList[category].push(todo);
@@ -28,13 +31,21 @@ const App = {
 	deleteTodo: function (todo) {
 		return;
 	},
-	initTodoList: function () {
+	getTodoList: function () {
 		let todoList = localStorage.getItem("todoList");
 		if (todoList) {
-			this.todoList = JSON.parse(todoList);
+			return JSON.parse(todoList);
+		} else {
+			return false;
+		}
+	},
+	initTodoList: function () {
+		let todoList = this.getTodoList();
+		if (todoList) {
+			this.todoList = todoList;
 		} else {
 			this.todoList = {
-				default: []
+				all: []
 			};
 			localStorage.setItem("todoList", JSON.stringify(this.todoList));
 		}

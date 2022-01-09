@@ -3,11 +3,22 @@
 export { DOM as default };
 
 const DOM = {
-	init: function (date) {
+	init: function (date, todoList) {
 		this.body = document.querySelector("body");
 		this.contentArea = this.body.querySelector("#content");
-		this.contentArea.appendChild(this.navbar.self);
+
+		// Navbar
 		this.navbar.date.textContent = date;
+		this.contentArea.appendChild(this.navbar.self);
+
+		// Main content
+		this.mainArea = document.createElement("div");
+		this.mainArea.classList.add("container");
+		this.contentArea.appendChild(this.mainArea);
+
+		// Sidebar
+		this.sidebar = this.sidebar(todoList);
+		this.mainArea.appendChild(this.sidebar.self);
 	},
 	initInterface: function () {
 		return;
@@ -74,5 +85,58 @@ const DOM = {
 		navbar.appendChild(search.box);
 
 		return { self: navbar, hamburger: hamburger, date: date, search: search };
-	})()
+	})(),
+	sidebar: function (todoList) {
+		const aside = document.createElement("aside");
+		aside.classList.add("active");
+
+		let appendToAside = function (...elements) {
+			let section = document.createElement("section");
+
+			for (let element of elements) {
+				section.appendChild(element);
+			}
+			aside.appendChild(section);
+		};
+
+		// Filter by Category
+		const categoriesHeader = document.createElement("h2");
+		categoriesHeader.textContent = "Filter by category:";
+		aside.appendChild(categoriesHeader);
+
+		let categories = document.createElement("ul");
+		for (let key in todoList) {
+			let li = document.createElement("li");
+			li.classList.add("category");
+			li.textContent = key === "default" ? "All" : key;
+			categories.appendChild(li);
+		}
+		appendToAside(categoriesHeader, categories);
+
+		// Filter by Date
+		const dateHeader = document.createElement("h2");
+		dateHeader.textContent = "Filter by date:";
+		aside.appendChild(dateHeader);
+
+		const dateOpts = ["Today", "This Week", "This Month"];
+		const dateIconClasses = ["day", "week", "month"];
+		const dateList = document.createElement("ul");
+		for (let i = 0; i < 3; i++) {
+			let li = document.createElement("li");
+			li.classList.add("date", dateIconClasses[i]);
+			li.textContent = dateOpts[i];
+			dateList.appendChild(li);
+		}
+		appendToAside(dateHeader, dateList);
+
+		// Dummy text to test overflow
+		// for (let i = 10; i > 0; i--) {
+		// 	let h = document.createElement("h1");
+		// 	h.textContent = "TEST";
+		// 	h.style.cssText = "font-size: 2.5em; text-align: center";
+		// 	appendToAside(h);
+		// }
+
+		return { self: aside, categories: categories };
+	}
 };
