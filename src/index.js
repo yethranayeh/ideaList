@@ -49,8 +49,39 @@ DOM.navbar.search.box.addEventListener("focusout", () => {
 
 // SIDEBAR
 // -All list items (categories and dates)
-for (let each of [...DOM.sidebar.dates, ...DOM.sidebar.categories]) {
-	each.addEventListener("click", function () {
+for (let each of DOM.sidebar.categories) {
+	each.addEventListener("click", (event) => {
+		let All = DOM.sidebar.self.querySelector("#filterAll");
+		// If "All" filter is clicked
+		if (event.target.id === All.id) {
+			DOM.sidebar.categories.forEach((cat) => {
+				// Remove active from every filter except "All"
+				if (!(cat.id === All.id)) {
+					cat.classList.remove("active");
+				}
+			});
+		} else {
+			// If any filter other than "All" is clicked
+
+			// If "All" is active, remove it because any other filter will contain less than all todo elements
+			if (All.classList.contains("active")) {
+				All.classList.remove("active");
+			}
+		}
+		each.classList.toggle("active");
+	});
+}
+
+for (let each of DOM.sidebar.dates) {
+	each.addEventListener("click", () => {
+		// For each date filter, if it is not the currently clicked one, remove its "active" class
+		DOM.sidebar.dates.forEach((date) => {
+			if (each != date) {
+				date.classList.remove("active");
+			}
+		});
+
+		// Toggle "active" class of clicked element
 		each.classList.toggle("active");
 	});
 }

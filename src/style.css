@@ -1,5 +1,7 @@
 /** @format */
 
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
+
 :root {
 	--china-rose: #a24b68;
 	--dark-byzantium: #53294c;
@@ -29,6 +31,7 @@ body {
 	background: -moz-linear-gradient(top left, var(--space-cadet), var(--russian-violet));
 	background: linear-gradient(to bottom right, var(--space-cadet), var(--russian-violet));
 	overflow: hidden;
+	font-family: "Josefin Sans", sans-serif;
 }
 
 .disable-select {
@@ -198,7 +201,7 @@ aside h2 {
 
 aside li {
 	display: inline-block;
-	padding: 0.2em 0.4em;
+	padding: 0.35em 0.4em 0.2em;
 	margin-right: 0.4em;
 	margin-bottom: 0.4em;
 	cursor: pointer;

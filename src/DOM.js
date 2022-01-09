@@ -112,6 +112,9 @@ const DOM = {
 			let li = document.createElement("li");
 			li.classList.add("category");
 			li.textContent = key === "default" ? "All" : key;
+			if (key === "default") {
+				li.id = "filterAll";
+			}
 			categoryList.appendChild(li);
 			categories.push(li);
 		}
