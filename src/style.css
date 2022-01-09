@@ -24,8 +24,6 @@
 }
 
 body {
-	background-image: linear-gradient(to bottom, var(--dark-violet), var(--space-cadet));
-	background-repeat: no-repeat;
 	background: var(--space-cadet);
 	background: -webkit-linear-gradient(top left, var(--space-cadet), var(--russian-violet));
 	background: -moz-linear-gradient(top left, var(--space-cadet), var(--russian-violet));
@@ -97,7 +95,7 @@ nav {
 /* --Date */
 .display-date {
 	color: var(--light-gray);
-	font-size: 1.2em;
+	font-size: 1.55em;
 	font-weight: 700;
 	transition: font-size 250ms ease-out, opacity 150ms ease-in-out;
 }

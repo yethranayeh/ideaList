@@ -52,7 +52,7 @@ const DOM = {
 		// Date
 		const date = (function () {
 			const today = document.createElement("span");
-			today.classList.add("display-date");
+			today.classList.add("display-date", "disable-select");
 			today.textContent = "test";
 
 			return today;
