@@ -103,7 +103,7 @@ const DOM = {
 
 		// Filter by Tag
 		const tagsHeader = document.createElement("h2");
-		tagsHeader.textContent = "Categories:";
+		tagsHeader.textContent = "Tags:";
 		aside.appendChild(tagsHeader);
 
 		const tagList = document.createElement("ul");
@@ -122,7 +122,7 @@ const DOM = {
 
 		// Filter by Date
 		const dateHeader = document.createElement("h2");
-		dateHeader.textContent = "Filter by date:";
+		dateHeader.textContent = "Date:";
 		aside.appendChild(dateHeader);
 
 		const dateOpts = ["Today", "This Week", "This Month"];
