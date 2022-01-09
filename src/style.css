@@ -94,6 +94,7 @@ nav {
 
 /* --Date */
 .display-date {
+	flex: 0 0 auto;
 	color: var(--light-gray);
 	font-size: 1.55em;
 	font-weight: 700;
@@ -166,10 +167,11 @@ nav {
 /* Sidebar */
 
 aside {
-	max-height: calc(100vh - var(--nav-height));
-	min-height: calc(100vh - var(--nav-height));
 	display: flex;
 	flex-direction: column;
+	justify-content: space-between;
+	max-height: calc(100vh - var(--nav-height));
+	min-height: calc(100vh - var(--nav-height));
 	padding: 1.5em;
 	overflow-y: auto;
 
@@ -247,4 +249,67 @@ aside li.week::before {
 
 aside li.month::before {
 	content: "\f133";
+}
+
+/* -Language Switch */
+
+.locale-select {
+	text-align: center;
+}
+
+aside .btn {
+	border: 3px solid var(--light-gray);
+	display: inline-block;
+	padding: 10px;
+	position: relative;
+	text-align: center;
+	transition: background 600ms ease, color 600ms ease;
+}
+
+input[type="radio"].toggle {
+	display: none;
+}
+
+input[type="radio"].toggle + label {
+	cursor: pointer;
+	min-width: 60px;
+	text-transform: uppercase;
+}
+
+input[type="radio"].toggle + label:hover {
+	background: none;
+	color: var(--light-gray);
+}
+
+input[type="radio"].toggle + label:after {
+	background: var(--light-gray);
+	content: "";
+	height: 100%;
+	position: absolute;
+	top: 0;
+	transition: left 200ms cubic-bezier(0.77, 0, 0.175, 1);
+	width: 100%;
+	z-index: -1;
+}
+
+input[type="radio"].toggle.toggle-en + label {
+	border-right: 0;
+}
+
+input[type="radio"].toggle.toggle-en + label:after {
+	left: 100%;
+}
+
+input[type="radio"].toggle.toggle-tr + label:after {
+	left: -100%;
+}
+
+input[type="radio"].toggle:checked + label {
+	cursor: default;
+	color: var(--china-rose);
+	transition: color 200ms;
+}
+
+input[type="radio"].toggle:checked + label:after {
+	left: 0;
 }

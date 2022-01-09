@@ -53,7 +53,6 @@ const DOM = {
 		const date = (function () {
 			const today = document.createElement("span");
 			today.classList.add("display-date", "disable-select");
-			today.textContent = "test";
 
 			return today;
 		})();
@@ -88,22 +87,28 @@ const DOM = {
 	})(),
 	sidebar: function (todoList) {
 		const aside = document.createElement("aside");
-		aside.classList.add("active");
+
+		// Start with active class for faster debug
+		// aside.classList.add("active");
 
 		// Wrap each part in a section tag before adding to sidebar
-		function appendToAside(...elements) {
+		function addToSection(...elements) {
 			let section = document.createElement("section");
 			section.classList.add("disable-select");
 
 			for (let element of elements) {
 				section.appendChild(element);
 			}
-			aside.appendChild(section);
+			return section;
 		}
+
+		// Filters
+		const filters = document.createElement("div");
 
 		// Filter by Tag
 		const tagsHeader = document.createElement("h2");
-		tagsHeader.textContent = "Tags:";
+		tagsHeader.setAttribute("data-key", "tags-header");
+		// tagsHeader.textContent = "Tags:";
 		aside.appendChild(tagsHeader);
 
 		const tagList = document.createElement("ul");
@@ -114,38 +119,74 @@ const DOM = {
 			li.textContent = key === "default" ? "All" : key;
 			if (key === "default") {
 				li.id = "filterAll";
+				li.setAttribute("data-key", "tag-all");
 			}
 			tagList.appendChild(li);
 			tags.push(li);
 		}
-		appendToAside(tagsHeader, tagList);
+		let tagContent = addToSection(tagsHeader, tagList);
+		filters.appendChild(tagContent);
 
 		// Filter by Date
 		const dateHeader = document.createElement("h2");
-		dateHeader.textContent = "Date:";
+		dateHeader.setAttribute("data-key", "date-header");
 		aside.appendChild(dateHeader);
 
-		const dateOpts = ["Today", "This Week", "This Month"];
+		// const dateOpts = ["Today", "This Week", "This Month"];
 		const dateIconClasses = ["day", "week", "month"];
 		const dateList = document.createElement("ul");
 		const dates = [];
 		for (let i = 0; i < 3; i++) {
 			let li = document.createElement("li");
+			li.setAttribute("data-key", `date-filter-${dateIconClasses[i]}`);
 			li.classList.add("date", dateIconClasses[i]);
-			li.textContent = dateOpts[i];
+			// li.textContent = dateOpts[i];
 			dateList.appendChild(li);
 			dates.push(li);
 		}
-		appendToAside(dateHeader, dateList);
+		const dateContent = addToSection(dateHeader, dateList);
+		filters.appendChild(dateContent);
+		aside.appendChild(filters);
 
-		// Dummy text to test overflow
+		// Change locale
+		const localeSect = document.createElement("form");
+		localeSect.classList.add("locale-select");
+		const locales = ["en", "tr"];
+		const inputs = [];
+		for (let locale of locales) {
+			let storageLang = localStorage.getItem("TodoLanguage");
+			storageLang = storageLang ? storageLang : "en";
+			// Input
+			let input = document.createElement("input");
+			input.id = `toggle-${locale}`;
+			input.classList.add("toggle", `toggle-${locale}`);
+			input.setAttribute("type", "radio");
+			input.setAttribute("name", "toggle");
+			input.setAttribute("value", "false");
+			if (locale === storageLang) {
+				input.checked = true;
+			}
+			inputs.push(input);
+			localeSect.appendChild(input);
+
+			// Label
+			let labelElement = document.createElement("label");
+			labelElement.setAttribute("for", `toggle-${locale}`);
+			labelElement.classList.add("btn");
+			labelElement.textContent = locale;
+			localeSect.appendChild(labelElement);
+		}
+
+		aside.appendChild(addToSection(localeSect));
+
+		// Dummy text to test overflow-y
 		// for (let i = 10; i > 0; i--) {
 		// 	let h = document.createElement("h1");
 		// 	h.textContent = "TEST";
 		// 	h.style.cssText = "font-size: 2.5em; text-align: center";
-		// 	appendToAside(h);
+		// 	aside.appendChild(h);
 		// }
 
-		return { self: aside, tagList: tagList, tags: tags, dateList: dateList, dates: dates };
+		return { self: aside, tagList: tagList, tags: tags, dateList: dateList, dates: dates, langInputs: inputs };
 	}
 };

@@ -4,13 +4,87 @@ import "./reset.css";
 import "./style.css";
 import PubSub from "pubsub-js";
 import format from "date-fns/format";
+import { enUS, tr } from "date-fns/locale";
+import enLocale from "./locales/en.json";
+import trLocale from "./locales/tr.json";
 import App from "./app.js";
 import DOM from "./DOM.js";
 
 // Initialize
 App.init();
 
-let today = format(new Date(), "cccc, d");
+// i18n
+const storageLang = localStorage.getItem("TodoLanguage");
+const defaultLocale = storageLang ? storageLang : "en";
+// const supportedLocales = ["en", "tr"];
+// const navigatorLang = navigator.language.split("-")[0];
+let locale;
+let translations = {};
+
+// When the page content is ready...
+document.addEventListener("DOMContentLoaded", () => {
+	setLocale(defaultLocale);
+});
+
+setLocale(locale);
+
+// Load translations for the given locale and translate
+// the page to this locale
+async function setLocale(newLocale) {
+	if (newLocale === locale) return;
+	const newTranslations = await fetchTranslationsFor(newLocale);
+	locale = newLocale;
+	translations = newTranslations;
+	translatePage();
+}
+
+// Retrieve translations JSON object for the given
+// locale over the network
+async function fetchTranslationsFor(newLocale) {
+	if (newLocale === "en") {
+		return enLocale;
+	} else if (newLocale === "tr") {
+		return trLocale;
+	} else {
+		console.error("There was a problem while fetching translations for the local language.");
+		console.log(
+			"%cPlease contact %cgithub.com/yethranayeh",
+			"font-size: 2em; color: #eee;",
+			"font-size: 2em; color: blue; text-decoration: underline; font-weight: bold; cursor: pointer;"
+		);
+		return;
+	}
+}
+
+// Replace the inner text of each element that has a
+// data-i18n-key attribute with the translation corresponding
+// to its data-i18n-key
+function translatePage() {
+	document.querySelectorAll("[data-key]").forEach(translateElement);
+}
+
+// Replace the inner text of the given HTML element
+// with the translation in the active locale,
+// corresponding to the element's data-i18n-key
+function translateElement(element) {
+	const key = element.getAttribute("data-key");
+	const translation = translations[key];
+	element.innerText = translation;
+	PubSub.publish("translationDone");
+}
+
+// Get locale language formatted Today
+function getToday() {
+	let dateLocale;
+	if (locale === "en" || !locale) {
+		dateLocale = "en";
+	} else if (locale === "tr") {
+		dateLocale = "tr";
+	}
+	return format(new Date(), "cccc, d", { locale: dateLocale === "en" ? enUS : tr });
+}
+
+let today = getToday();
 DOM.init(today, App.getTodoList());
 
 // Nav height variable to calculate the height of navbar and how much distance other elements need.
@@ -86,7 +160,21 @@ for (let each of DOM.sidebar.dates) {
 	});
 }
 
+// -Language switch
+DOM.sidebar.langInputs.forEach((input) => {
+	input.addEventListener("change", (e) => {
+		setLocale(e.target.id.split("-")[1]);
+	});
+});
+
 // SUBSCRIBE EVENTS
+PubSub.subscribe("translationDone", () => {
+	// Change language of date display on navbar
+	DOM.navbar.date.textContent = getToday();
+
+	// Set language in local storage
+	localStorage.setItem("TodoLanguage", locale);
+});
 
 PubSub.subscribe(E.hamClicked, () => {
 	DOM.navbar.hamburger.classList.toggle("active");

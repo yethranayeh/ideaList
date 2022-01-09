@@ -1,0 +1,9 @@
+{
+	"tags-header": "Etiketler:",
+	"tag-all": "Hepsi",
+	"date-header": "Tarih:",
+	"date-options": ["Bugün", "Bu Hafta", "Bu Ay"],
+	"date-filter-day": "Bugün",
+	"date-filter-week": "Bu Hafta",
+	"date-filter-month": "Bu Ay"
+}
