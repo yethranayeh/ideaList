@@ -10,7 +10,10 @@
 	--oxford-blue: #121e41;
 	--space-cadet: #1a183f;
 	--light-gray: #fefefe;
+	--dark-gray: #777777;
 }
+
+/* Start: General */
 
 *,
 *::before,
@@ -27,6 +30,15 @@ body {
 	background: linear-gradient(to bottom right, var(--space-cadet), var(--russian-violet));
 	overflow: hidden;
 }
+
+.disable-select {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+/* End: General */
 
 /* Navbar */
 nav {
@@ -154,10 +166,10 @@ nav {
 
 aside {
 	max-height: calc(100vh - var(--nav-height));
-	min-height: calc(99vh - var(--nav-height));
+	min-height: calc(100vh - var(--nav-height));
 	display: flex;
 	flex-direction: column;
-	padding: 20px;
+	padding: 1.5em;
 	overflow-y: auto;
 
 	background: linear-gradient(to bottom right, var(--space-cadet), var(--russian-violet)) no-repeat center fixed;
@@ -175,11 +187,12 @@ aside.active {
 }
 
 aside section {
-	margin-bottom: 20px;
+	margin-bottom: 1.5em;
 }
 
 aside h2 {
-	font-size: 1.8em;
+	color: var(--light-gray);
+	font-size: 1.5em;
 	margin-bottom: 0.5em;
 }
 
@@ -190,21 +203,33 @@ aside li {
 	margin-bottom: 0.4em;
 	cursor: pointer;
 
-	font-size: 1.2em;
-	color: var(--china-rose);
+	font-size: 1.3em;
+	color: var(--dark-byzantium);
 
-	background-color: var(--oxford-blue);
-
-	border: 2px solid var(--china-rose);
+	border: 2px solid var(--dark-byzantium);
 	border-radius: 10px;
+
+	background-color: var(--space-cadet);
+
+	transition: all 250ms ease-out;
+}
+
+aside li.active {
+	color: var(--china-rose);
+	border: 2px solid var(--china-rose);
+	background-color: var(--oxford-blue);
 }
 
 aside li::before {
 	font-family: "Font Awesome 5 Free";
 	font-weight: 900;
-	font-size: 0.8em;
-	color: var(--light-gray);
+	font-size: 0.9em;
+	color: var(--dark-gray);
 	margin-right: 5px;
+}
+
+aside li.active::before {
+	color: var(--light-gray);
 }
 
 aside li.category::before {

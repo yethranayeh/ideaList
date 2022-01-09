@@ -90,28 +90,32 @@ const DOM = {
 		const aside = document.createElement("aside");
 		aside.classList.add("active");
 
-		let appendToAside = function (...elements) {
+		// Wrap each part in a section tag before adding to sidebar
+		function appendToAside(...elements) {
 			let section = document.createElement("section");
+			section.classList.add("disable-select");
 
 			for (let element of elements) {
 				section.appendChild(element);
 			}
 			aside.appendChild(section);
-		};
+		}
 
 		// Filter by Category
 		const categoriesHeader = document.createElement("h2");
 		categoriesHeader.textContent = "Filter by category:";
 		aside.appendChild(categoriesHeader);
 
-		let categories = document.createElement("ul");
+		const categoryList = document.createElement("ul");
+		const categories = [];
 		for (let key in todoList) {
 			let li = document.createElement("li");
 			li.classList.add("category");
 			li.textContent = key === "default" ? "All" : key;
-			categories.appendChild(li);
+			categoryList.appendChild(li);
+			categories.push(li);
 		}
-		appendToAside(categoriesHeader, categories);
+		appendToAside(categoriesHeader, categoryList);
 
 		// Filter by Date
 		const dateHeader = document.createElement("h2");
@@ -121,11 +125,13 @@ const DOM = {
 		const dateOpts = ["Today", "This Week", "This Month"];
 		const dateIconClasses = ["day", "week", "month"];
 		const dateList = document.createElement("ul");
+		const dates = [];
 		for (let i = 0; i < 3; i++) {
 			let li = document.createElement("li");
 			li.classList.add("date", dateIconClasses[i]);
 			li.textContent = dateOpts[i];
 			dateList.appendChild(li);
+			dates.push(li);
 		}
 		appendToAside(dateHeader, dateList);
 
@@ -137,6 +143,6 @@ const DOM = {
 		// 	appendToAside(h);
 		// }
 
-		return { self: aside, categories: categories };
+		return { self: aside, categoryList: categoryList, categories: categories, dateList: dateList, dates: dates };
 	}
 };
