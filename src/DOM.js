@@ -101,13 +101,13 @@ const DOM = {
 			aside.appendChild(section);
 		}
 
-		// Filter by Category
-		const categoriesHeader = document.createElement("h2");
-		categoriesHeader.textContent = "Filter by category:";
-		aside.appendChild(categoriesHeader);
+		// Filter by Tag
+		const tagsHeader = document.createElement("h2");
+		tagsHeader.textContent = "Categories:";
+		aside.appendChild(tagsHeader);
 
-		const categoryList = document.createElement("ul");
-		const categories = [];
+		const tagList = document.createElement("ul");
+		const tags = [];
 		for (let key in todoList) {
 			let li = document.createElement("li");
 			li.classList.add("category");
@@ -115,10 +115,10 @@ const DOM = {
 			if (key === "default") {
 				li.id = "filterAll";
 			}
-			categoryList.appendChild(li);
-			categories.push(li);
+			tagList.appendChild(li);
+			tags.push(li);
 		}
-		appendToAside(categoriesHeader, categoryList);
+		appendToAside(tagsHeader, tagList);
 
 		// Filter by Date
 		const dateHeader = document.createElement("h2");
@@ -146,6 +146,6 @@ const DOM = {
 		// 	appendToAside(h);
 		// }
 
-		return { self: aside, categoryList: categoryList, categories: categories, dateList: dateList, dates: dates };
+		return { self: aside, tagList: tagList, tags: tags, dateList: dateList, dates: dates };
 	}
 };

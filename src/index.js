@@ -48,13 +48,13 @@ DOM.navbar.search.box.addEventListener("focusout", () => {
 });
 
 // SIDEBAR
-// -All list items (categories and dates)
-for (let each of DOM.sidebar.categories) {
+// -All list items (tags and dates)
+for (let each of DOM.sidebar.tags) {
 	each.addEventListener("click", (event) => {
 		let All = DOM.sidebar.self.querySelector("#filterAll");
 		// If "All" filter is clicked
 		if (event.target.id === All.id) {
-			DOM.sidebar.categories.forEach((cat) => {
+			DOM.sidebar.tags.forEach((cat) => {
 				// Remove active from every filter except "All"
 				if (!(cat.id === All.id)) {
 					cat.classList.remove("active");
