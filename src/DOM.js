@@ -11,7 +11,7 @@ const DOM = {
 		this.navbar.date.textContent = date;
 		this.contentArea.appendChild(this.navbar.self);
 
-		// Main content
+		// Main area
 		this.mainArea = document.createElement("div");
 		this.mainArea.classList.add("container");
 		this.contentArea.appendChild(this.mainArea);
@@ -19,6 +19,10 @@ const DOM = {
 		// Sidebar
 		this.sidebar = this.sidebar(todoList);
 		this.mainArea.appendChild(this.sidebar.self);
+
+		// Main Content
+		this.mainArea.appendChild(this.main.self);
+		this.displayTodos(todoList);
 	},
 	initInterface: function () {
 		return;
@@ -115,9 +119,9 @@ const DOM = {
 		const tags = [];
 		for (let key in todoList) {
 			let li = document.createElement("li");
-			li.classList.add("category");
-			li.textContent = key === "default" ? "All" : key;
-			if (key === "default") {
+			li.classList.add("tag");
+			li.textContent = key;
+			if (key === "all") {
 				li.id = "filterAll";
 				li.setAttribute("data-key", "tag-all");
 			}
@@ -188,5 +192,111 @@ const DOM = {
 		// }
 
 		return { self: aside, tagList: tagList, tags: tags, dateList: dateList, dates: dates, langInputs: inputs };
+	},
+	main: (function () {
+		let main = document.createElement("main");
+
+		return { self: main };
+	})(),
+	displayTodos: function (...tags) {
+		tags.forEach((tag) => {
+			for (let key in tag) {
+				// For each tag, create a header.
+				let section = document.createElement("section");
+				let sectionHeader = document.createElement("h2");
+				sectionHeader.classList.add("disable-select");
+				if (key === "all") {
+					sectionHeader.setAttribute("data-key", "tag-all");
+				}
+				sectionHeader.textContent = key;
+				section.appendChild(sectionHeader);
+
+				// For each element in a tag, create a container
+				for (let todo of tag[key]) {
+					let container = document.createElement("div");
+					container.classList.add("todo");
+
+					function appendTo(parent, elementArray) {
+						elementArray.forEach((element) => {
+							parent.appendChild(element);
+						});
+					}
+
+					// Todo Checkbox to mark as completed
+					let todoCheckbox = document.createElement("div");
+					todoCheckbox.classList.add("todo-checkbox");
+					let isComplete = document.createElement("input");
+					isComplete.setAttribute("type", "checkbox");
+					isComplete.disabled = true;
+					if (todo.isComplete) {
+						isComplete.checked = true;
+					}
+					todoCheckbox.appendChild(isComplete);
+					appendTo(container, [todoCheckbox]);
+
+					// Main Content
+					let todoContent = document.createElement("div");
+					todoContent.classList.add("todo-main");
+
+					// -Todo Title
+					let title = document.createElement("span");
+					title.classList.add("todo-title");
+					title.textContent = todo.title;
+
+					// Todo Info (Description and Notes)
+					let infoContainer = document.createElement("div");
+					infoContainer.classList.add("todo-info");
+
+					let desc = document.createElement("p");
+					desc.classList.add("todo-description");
+					desc.textContent = todo.description;
+					infoContainer.appendChild(desc);
+
+					if (todo.notes.length) {
+						let note = document.createElement("p");
+						note.classList.add("todo-note");
+						note.textContent = todo.notes;
+						infoContainer.appendChild(note);
+					}
+
+					// Todo subtext
+					let subtext = document.createElement("div");
+					subtext.classList.add("todo-subtext");
+
+					let priority = document.createElement("span");
+					priority.classList.add("todo-priority");
+					priority.textContent = todo.priority;
+
+					let due = document.createElement("span");
+					due.classList.add("todo-due-date");
+					due.textContent = todo.dueDate;
+
+					let todoCategory = document.createElement("p");
+					todoCategory.textContent = todo.todoCategory;
+
+					appendTo(subtext, [priority, due, todoCategory]);
+
+					// When todo.category is changed to todo.tags, use this:
+					// let todoTags = document.createElement("ul");
+					// todo.tags.forEach((tag) => {
+					// 	let li = document.createElement("li");
+					// 	li.textContent = tag;
+					// 	todoTags.appendChild(li);
+					// });
+
+					appendTo(todoContent, [title, infoContainer, subtext]);
+					appendTo(container, [todoContent]);
+					appendTo(section, [container]);
+				}
+
+				this.main.self.appendChild(section);
+			}
+			// console.info(`Key: %c${key}`, "background: white; color: #777");
+			// todoList[key].forEach((obj) => {
+			// 	console.log(obj.title);
+			// 	console.log(obj.description);
+			// 	console.log(obj.dueDate);
+			// });
+		});
 	}
 };

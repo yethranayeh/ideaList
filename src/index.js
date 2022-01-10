@@ -86,6 +86,7 @@ function getToday() {
 
 let today = getToday();
 DOM.init(today, App.getTodoList());
+// DOM.displayTodos(App.todoList);
 
 // Nav height variable to calculate the height of navbar and how much distance other elements need.
 DOM.mainArea.style.cssText = `--nav-height: calc(${DOM.navbar.self.offsetHeight}px)`;
@@ -164,6 +165,15 @@ for (let each of DOM.sidebar.dates) {
 DOM.sidebar.langInputs.forEach((input) => {
 	input.addEventListener("change", (e) => {
 		setLocale(e.target.id.split("-")[1]);
+	});
+});
+
+// Main Content
+
+// -Notes button (if todo element has notes)
+DOM.main.self.querySelectorAll(".todo-note").forEach((note) => {
+	note.addEventListener("click", (e) => {
+		e.target.classList.add("active");
 	});
 });
 
