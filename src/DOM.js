@@ -22,7 +22,8 @@ const DOM = {
 
 		// Main Content
 		this.mainArea.appendChild(this.main.self);
-		this.displayTodos(todoList);
+		// "all" key is hard-coded because on app initialization, all todos should be listed on the page
+		this.displayTodos(todoList["all"]);
 	},
 	initInterface: function () {
 		return;
@@ -198,105 +199,118 @@ const DOM = {
 
 		return { self: main };
 	})(),
-	displayTodos: function (...tags) {
-		tags.forEach((tag) => {
-			for (let key in tag) {
-				// For each tag, create a header.
-				let section = document.createElement("section");
-				let sectionHeader = document.createElement("h2");
-				sectionHeader.classList.add("disable-select");
-				if (key === "all") {
-					sectionHeader.setAttribute("data-key", "tag-all");
+	/**
+	 * @param {Array} todos An array of todos to display
+	 * @param {Array} filteredIndexes An array of filtered indexes of todos. If provided, only these will be shown [Optional]
+	 */
+	displayTodos: function (todos, filteredIndexes) {
+		// Since this function will be called each time there is a filter applied,
+		// it should always start on a clean plate.
+		this.main.self.innerHTML = "";
+
+		filteredIndexes = filteredIndexes ? filteredIndexes : null;
+
+		// If filtered indexes are provided:
+		if (filteredIndexes) {
+			let filteredTodos = [];
+			for (let todo of todos) {
+				if (filteredIndexes.includes(todo.index)) {
+					filteredTodos.push(todo);
 				}
-				sectionHeader.textContent = key;
-				section.appendChild(sectionHeader);
-
-				// For each element in a tag, create a container
-				for (let todo of tag[key]) {
-					let container = document.createElement("div");
-					container.classList.add("todo");
-
-					function appendTo(parent, elementArray) {
-						elementArray.forEach((element) => {
-							parent.appendChild(element);
-						});
-					}
-
-					// Todo Checkbox to mark as completed
-					let todoCheckbox = document.createElement("div");
-					todoCheckbox.classList.add("todo-checkbox");
-					let isComplete = document.createElement("input");
-					isComplete.setAttribute("type", "checkbox");
-					isComplete.disabled = true;
-					if (todo.isComplete) {
-						isComplete.checked = true;
-					}
-					todoCheckbox.appendChild(isComplete);
-					appendTo(container, [todoCheckbox]);
-
-					// Main Content
-					let todoContent = document.createElement("div");
-					todoContent.classList.add("todo-main");
-
-					// -Todo Title
-					let title = document.createElement("span");
-					title.classList.add("todo-title");
-					title.textContent = todo.title;
-
-					// Todo Info (Description and Notes)
-					let infoContainer = document.createElement("div");
-					infoContainer.classList.add("todo-info");
-
-					let desc = document.createElement("p");
-					desc.classList.add("todo-description");
-					desc.textContent = todo.description;
-					infoContainer.appendChild(desc);
-
-					if (todo.notes.length) {
-						let note = document.createElement("p");
-						note.classList.add("todo-note");
-						note.textContent = todo.notes;
-						infoContainer.appendChild(note);
-					}
-
-					// Todo subtext
-					let subtext = document.createElement("div");
-					subtext.classList.add("todo-subtext");
-
-					let priority = document.createElement("span");
-					priority.classList.add("todo-priority");
-					priority.textContent = todo.priority;
-
-					let due = document.createElement("span");
-					due.classList.add("todo-due-date");
-					due.textContent = todo.dueDate;
-
-					let todoCategory = document.createElement("p");
-					todoCategory.textContent = todo.todoCategory;
-
-					appendTo(subtext, [priority, due, todoCategory]);
-
-					// When todo.category is changed to todo.tags, use this:
-					// let todoTags = document.createElement("ul");
-					// todo.tags.forEach((tag) => {
-					// 	let li = document.createElement("li");
-					// 	li.textContent = tag;
-					// 	todoTags.appendChild(li);
-					// });
-
-					appendTo(todoContent, [title, infoContainer, subtext]);
-					appendTo(container, [todoContent]);
-					appendTo(section, [container]);
-				}
-
-				this.main.self.appendChild(section);
 			}
-			// console.info(`Key: %c${key}`, "background: white; color: #777");
-			// todoList[key].forEach((obj) => {
-			// 	console.log(obj.title);
-			// 	console.log(obj.description);
-			// 	console.log(obj.dueDate);
-			// });
-		});
+
+			// Replace initial todos with filtered ones before going for the display loop
+			todos = filteredTodos;
+		}
+
+		// For each array element, create a todo container
+		if (todos.length) {
+			for (let todo of todos) {
+				let container = document.createElement("div");
+				container.classList.add("todo");
+
+				function appendTo(parent, elementArray) {
+					elementArray.forEach((element) => {
+						parent.appendChild(element);
+					});
+				}
+
+				// Todo Checkbox to mark as completed
+				let todoCheckbox = document.createElement("div");
+				todoCheckbox.classList.add("todo-checkbox");
+				let isComplete = document.createElement("input");
+				isComplete.setAttribute("type", "checkbox");
+				isComplete.disabled = true;
+				if (todo.isComplete) {
+					isComplete.checked = true;
+				}
+				todoCheckbox.appendChild(isComplete);
+				appendTo(container, [todoCheckbox]);
+
+				// Main Content
+				let todoContent = document.createElement("div");
+				todoContent.classList.add("todo-main");
+
+				// -Todo Title
+				let title = document.createElement("span");
+				title.classList.add("todo-title");
+				title.textContent = todo.title;
+
+				// Todo Info (Description and Notes)
+				let infoContainer = document.createElement("div");
+				infoContainer.classList.add("todo-info");
+
+				let desc = document.createElement("p");
+				desc.classList.add("todo-description");
+				desc.textContent = todo.description;
+				infoContainer.appendChild(desc);
+
+				if (todo.notes.length) {
+					let note = document.createElement("p");
+					note.classList.add("todo-note");
+					note.textContent = todo.notes;
+					infoContainer.appendChild(note);
+				}
+
+				// Todo subtext
+				let subtext = document.createElement("div");
+				subtext.classList.add("todo-subtext");
+
+				let priority = document.createElement("span");
+				priority.classList.add("todo-priority");
+				priority.textContent = todo.priority;
+
+				let due = document.createElement("span");
+				due.classList.add("todo-due-date");
+				due.textContent = todo.dueDate;
+
+				let todoCategory = document.createElement("p");
+				todoCategory.textContent = todo.tags;
+
+				appendTo(subtext, [priority, due, todoCategory]);
+
+				// When todo.category is changed to todo.tags, use this:
+				// let todoTags = document.createElement("ul");
+				// todo.tags.forEach((tag) => {
+				// 	let li = document.createElement("li");
+				// 	li.textContent = tag;
+				// 	todoTags.appendChild(li);
+				// });
+
+				appendTo(todoContent, [title, infoContainer, subtext]);
+				appendTo(container, [todoContent]);
+				this.main.self.appendChild(container);
+			}
+		} else if (filteredIndexes) {
+			// If todos list is empty because of indexes:
+			let p = document.createElement("p");
+			p.textContent = "No entry could be found matching the filter(s)";
+			this.main.self.appendChild(p);
+		} else {
+			// If todos list is empty, because the user did not create any yet:
+			let p = document.createElement("p");
+			p.textContent = "You have not created any todos yet...";
+			this.main.self.appendChild(p);
+		}
 	}
 };

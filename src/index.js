@@ -10,6 +10,15 @@ import trLocale from "./locales/tr.json";
 import App from "./app.js";
 import DOM from "./DOM.js";
 
+// Event names
+const E = {
+	hamClicked: "hamClicked",
+	searchFocused: "searchFocused",
+	searchFocusOut: "searchFocusOut",
+	filterClicked: "filterClicked",
+	translationDone: "translationDone"
+};
+
 // Initialize
 App.init();
 
@@ -70,7 +79,7 @@ function translateElement(element) {
 	const key = element.getAttribute("data-key");
 	const translation = translations[key];
 	element.innerText = translation;
-	PubSub.publish("translationDone");
+	PubSub.publish(E.translationDone);
 }
 
 // Get locale language formatted Today
@@ -86,18 +95,11 @@ function getToday() {
 
 let today = getToday();
 DOM.init(today, App.getTodoList());
-// DOM.displayTodos(App.todoList);
 
 // Nav height variable to calculate the height of navbar and how much distance other elements need.
 DOM.mainArea.style.cssText = `--nav-height: calc(${DOM.navbar.self.offsetHeight}px)`;
 
 // Event Listeners and Publish Events
-// Event names
-const E = {
-	hamClicked: "hamClicked",
-	searchFocused: "searchFocused",
-	searchFocusOut: "searchFocusOut"
-};
 
 // NAVBAR
 // -Hamburger menu click listener
@@ -144,6 +146,8 @@ for (let each of DOM.sidebar.tags) {
 			}
 		}
 		each.classList.toggle("active");
+
+		PubSub.publish(E.filterClicked);
 	});
 }
 
@@ -178,7 +182,7 @@ DOM.main.self.querySelectorAll(".todo-note").forEach((note) => {
 });
 
 // SUBSCRIBE EVENTS
-PubSub.subscribe("translationDone", () => {
+PubSub.subscribe(E.translationDone, () => {
 	// Change language of date display on navbar
 	DOM.navbar.date.textContent = getToday();
 
@@ -207,4 +211,22 @@ PubSub.subscribe(E.searchFocused, () => {
 PubSub.subscribe(E.searchFocusOut, () => {
 	// Change display state of Date in Navbar
 	DOM.navbar.date.classList.remove("fade-out");
+});
+
+PubSub.subscribe(E.filterClicked, () => {
+	let actives = [...document.querySelectorAll(".tag.active")];
+	let tags = [];
+	actives.forEach((active) => {
+		if (active.textContent === "All") {
+			return;
+		} else {
+			tags.push(active.textContent);
+		}
+	});
+
+	if (tags.length) {
+		DOM.displayTodos(App.todoList.all, App.getFilteredTodos(tags, [], []));
+	} else {
+		DOM.displayTodos(App.todoList["all"]);
+	}
 });

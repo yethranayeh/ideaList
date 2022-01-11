@@ -211,8 +211,7 @@ aside h2 {
 	margin-bottom: 0.5em;
 }
 
-aside li,
-main section h2 {
+aside li {
 	display: inline-block;
 	padding: 0.35em 0.4em 0.2em;
 	margin-right: 0.4em;
@@ -230,15 +229,13 @@ main section h2 {
 	transition: all 250ms ease-out;
 }
 
-aside li.active,
-main section h2 {
+aside li.active {
 	color: var(--china-rose);
 	border: 2px solid var(--china-rose);
 	background-color: var(--oxford-blue);
 }
 
-aside li::before,
-main section h2::before {
+aside li::before {
 	font-family: "Font Awesome 5 Free";
 	font-weight: 900;
 	font-size: 0.9em;
@@ -250,15 +247,9 @@ aside li.active::before {
 	color: var(--light-gray);
 }
 
-aside li.tag::before,
-main section h2::before {
+aside li.tag::before {
 	content: "\f292";
 }
-
-/* aside li.tag,
-main section h2 {
-	text-transform: capitalize;
-} */
 
 aside li.day::before {
 	content: "\f783";
@@ -339,20 +330,6 @@ input[type="radio"].toggle:checked + label:after {
 
 main {
 	padding: 2em;
-}
-
-main section {
-	margin-bottom: 2em;
-}
-
-main section h2::before {
-	color: var(--light-gray);
-}
-
-main section h2 {
-	display: inline-block;
-	cursor: auto;
-	transition: none;
 }
 
 .todo {
