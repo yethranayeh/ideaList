@@ -93,13 +93,22 @@ const App = {
 
 		// if tags are provided:
 		if (tags.length) {
-			// Check each todo
-			for (let todo of this.todoList["all"]) {
-				// Check that todo matches the provided tag(s)
-				if (arraysEqual(todo.tags, tags)) {
-					// If its index is not already in filtered array, add it
-					if (!filtered.includes(todo.index)) {
-						filtered.push(todo.index);
+			/**
+			 * @property {String} tag Tag name provided to the filter.
+			 */
+			for (let tag of tags) {
+				// Each tag has an array of indexes to help locate the actual object
+				/**
+				 * @property {Number} index Index number of the object that contains the provided tag
+				 * @property {Object} todo The Todo instance that corresponds to the index location in the array that contains "all" Todos.
+				 */
+				for (let index of this.todoList[tag]) {
+					let todo = this.todoList["all"][index];
+					if (arraysEqual(todo.tags, tags)) {
+						// If its index is not already in filtered array, add it
+						if (!filtered.includes(todo.index)) {
+							filtered.push(todo.index);
+						}
 					}
 				}
 			}
