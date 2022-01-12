@@ -131,10 +131,12 @@ for (let each of DOM.sidebar.tags) {
 		let All = DOM.sidebar.self.querySelector("#filterAll");
 		// If "All" filter is clicked
 		if (event.target.id === All.id) {
-			DOM.sidebar.tags.forEach((cat) => {
+			DOM.sidebar.tags.forEach((tag) => {
 				// Remove active from every filter except "All"
-				if (!(cat.id === All.id)) {
-					cat.classList.remove("active");
+				if (!(tag.id === All.id)) {
+					tag.classList.remove("active");
+				} else {
+					tag.classList.add("active");
 				}
 			});
 		} else {
@@ -144,8 +146,8 @@ for (let each of DOM.sidebar.tags) {
 			if (All.classList.contains("active")) {
 				All.classList.remove("active");
 			}
+			each.classList.toggle("active");
 		}
-		each.classList.toggle("active");
 
 		PubSub.publish(E.filterClicked);
 	});

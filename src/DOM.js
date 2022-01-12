@@ -124,6 +124,7 @@ const DOM = {
 			li.textContent = key;
 			if (key === "all") {
 				li.id = "filterAll";
+				li.classList.add("active");
 				li.setAttribute("data-key", "tag-all");
 			}
 			tagList.appendChild(li);
