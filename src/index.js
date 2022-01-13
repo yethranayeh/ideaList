@@ -183,6 +183,14 @@ DOM.main.self.querySelectorAll(".todo-note").forEach((note) => {
 	});
 });
 
+DOM.newTodoBtn.addEventListener("click", (e) => {
+	DOM.newTodoElementsToggle();
+});
+
+DOM.newTodoModal.closeBtn.addEventListener("click", (e) => {
+	DOM.newTodoElementsToggle();
+});
+
 // SUBSCRIBE EVENTS
 PubSub.subscribe(E.translationDone, () => {
 	// Change language of date display on navbar

@@ -22,7 +22,9 @@ const DOM = {
 
 		// Main Content
 		this.mainArea.appendChild(this.main.self);
-		// "all" key is hard-coded because on app initialization, all todos should be listed on the page
+		this.contentArea.appendChild(this.newTodoBtn);
+		this.contentArea.appendChild(this.newTodoModal.self);
+		// Display ALL Todos on page initialization
 		this.displayTodos(todoList["all"]);
 	},
 	initInterface: function () {
@@ -200,6 +202,29 @@ const DOM = {
 
 		return { self: main };
 	})(),
+	newTodoBtn: (function () {
+		let sect = document.createElement("i");
+		sect.classList.add("btn-create");
+
+		return sect;
+	})(),
+	newTodoModal: (function () {
+		let container = document.createElement("div");
+		container.classList.add("new-todo");
+
+		let closeBtn = document.createElement("i");
+		closeBtn.classList.add("btn-close");
+		container.appendChild(closeBtn);
+
+		let form = document.createElement("form");
+		form.classList.add("new-todo__form");
+
+		return { self: container, closeBtn: closeBtn, form: form };
+	})(),
+	newTodoElementsToggle: function () {
+		this.newTodoModal.self.classList.toggle("active");
+		this.newTodoBtn.classList.toggle("fade-out");
+	},
 	/**
 	 * @param {Array} todos An array of todos to display
 	 * @param {Array} filteredIndexes An array of filtered indexes of todos. If provided, only these will be shown [Optional]
