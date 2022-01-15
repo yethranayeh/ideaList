@@ -231,10 +231,22 @@ const DOM = {
 			let input = document.createElement("input");
 
 			if (element === "title") {
-				input.setAttribute("required", "true");
+				input.required = true;
 			} else if (element === "dueDate") {
 				label.textContent = "Due Date";
 				input.type = "date";
+				let dtToday = new Date();
+
+				let month = dtToday.getMonth() + 1;
+				let day = dtToday.getDate();
+				let year = dtToday.getFullYear();
+
+				if (month < 10) month = "0" + month.toString();
+				if (day < 10) day = "0" + day.toString();
+
+				let minDate = year + "-" + month + "-" + day;
+				input.min = input.value = minDate;
+				input.required = true;
 			} else if (element === "priority") {
 				// Label changed to span
 				label = document.createElement("span");
@@ -249,6 +261,10 @@ const DOM = {
 					radio.type = "radio";
 					radio.id = radioID;
 					radio.name = "priority";
+					radio.setAttribute("autocomplete", "off");
+					if (i === 0) {
+						radio.checked = true;
+					}
 
 					let radioLabel = document.createElement("label");
 					radioLabel.textContent = prios[i];

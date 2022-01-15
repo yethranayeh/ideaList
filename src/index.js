@@ -90,6 +90,7 @@ function getToday() {
 	} else if (locale === "tr") {
 		dateLocale = "tr";
 	}
+	// format() is a date-fns function
 	return format(new Date(), "cccc, d", { locale: dateLocale === "en" ? enUS : tr });
 }
 
