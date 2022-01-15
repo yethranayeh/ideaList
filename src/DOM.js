@@ -21,9 +21,9 @@ const DOM = {
 		this.mainArea.appendChild(this.sidebar.self);
 
 		// Main Content
+		this.mainArea.appendChild(this.newTodoForm.self);
+		this.mainArea.appendChild(this.newTodoBtn);
 		this.mainArea.appendChild(this.main.self);
-		this.contentArea.appendChild(this.newTodoBtn);
-		this.contentArea.appendChild(this.newTodoModal.self);
 		// Display ALL Todos on page initialization
 		this.displayTodos(todoList["all"]);
 	},
@@ -208,21 +208,53 @@ const DOM = {
 
 		return sect;
 	})(),
-	newTodoModal: (function () {
+	newTodoForm: (function () {
 		let container = document.createElement("div");
 		container.classList.add("new-todo");
 
 		let closeBtn = document.createElement("i");
-		closeBtn.classList.add("btn-close");
+		closeBtn.classList.add("btn-close", "fade-out");
 		container.appendChild(closeBtn);
 
 		let form = document.createElement("form");
 		form.classList.add("new-todo__form");
 
+		const formElements = ["title", "description", "dueDate", "priority", "notes", "checklist"];
+
+		for (let element of formElements) {
+			let id = `form-${element}`;
+
+			let label = document.createElement("label");
+			label.textContent = element;
+			label.setAttribute("for", id);
+
+			let input = document.createElement("input");
+			input.id = id;
+			if (element === "title") {
+				input.setAttribute("required", "true");
+			} else if (element === "dueDate") {
+				label.textContent = "Due Date";
+				input.type = "date";
+			} else if (element === "priority") {
+				input.classList.add("slider");
+				input.type = "range";
+				input.min = 0;
+				input.max = 3;
+				input.value = 0;
+				input.setAttribute("autocomplete", "off");
+			}
+
+			form.appendChild(label);
+			form.appendChild(input);
+		}
+
+		container.appendChild(form);
+
 		return { self: container, closeBtn: closeBtn, form: form };
 	})(),
 	newTodoElementsToggle: function () {
-		this.newTodoModal.self.classList.toggle("active");
+		this.newTodoForm.self.classList.toggle("active");
+		this.newTodoForm.closeBtn.classList.toggle("fade-out");
 		this.newTodoBtn.classList.toggle("fade-out");
 	},
 	/**

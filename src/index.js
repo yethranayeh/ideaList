@@ -187,7 +187,7 @@ DOM.newTodoBtn.addEventListener("click", (e) => {
 	DOM.newTodoElementsToggle();
 });
 
-DOM.newTodoModal.closeBtn.addEventListener("click", (e) => {
+DOM.newTodoForm.closeBtn.addEventListener("click", (e) => {
 	DOM.newTodoElementsToggle();
 });
 

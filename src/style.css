@@ -13,6 +13,7 @@
 	--space-cadet: #1a183f;
 	--light-gray: #fefefe;
 	--dark-gray: #777777;
+	--border-radius: 0.6rem;
 }
 
 /* Start: General */
@@ -58,7 +59,7 @@ nav {
 	background: linear-gradient(to bottom right, var(--space-cadet), var(--russian-violet)) no-repeat center fixed;
 	background-size: cover;
 	box-shadow: 0px 1px 2px var(--purpureus);
-	z-index: 99;
+	z-index: 999;
 }
 
 /* --Hamburger */
@@ -129,8 +130,7 @@ nav {
 	height: 50px;
 	background: none;
 	border: 2px solid var(--light-gray);
-	border-radius: 10px;
-	/* font-family: Comic Sans MS; */
+	border-radius: var(--border-radius);
 	font-size: 26px;
 	color: var(--light-gray);
 	outline: none;
@@ -144,7 +144,7 @@ nav {
 	cursor: text;
 	width: 280px;
 	background: var(--space-cadet);
-	border-radius: 15px;
+	border-radius: var(--border-radius);
 }
 
 .search-box i {
@@ -182,7 +182,7 @@ main {
 
 aside {
 	position: absolute;
-	z-index: 99;
+	z-index: 98;
 
 	display: flex;
 	flex-direction: column;
@@ -224,7 +224,7 @@ aside li {
 	color: var(--dark-byzantium);
 
 	border: 2px solid var(--dark-byzantium);
-	border-radius: 10px;
+	border-radius: var(--border-radius);
 
 	background-color: var(--space-cadet);
 
@@ -341,7 +341,7 @@ main {
 	padding: 0.5em;
 	margin-bottom: 1em;
 	border: 2px solid var(--violet-blue);
-	border-radius: 10px;
+	border-radius: var(--border-radius);
 
 	color: var(--light-gray);
 	background-color: var(--oxford-blue);
@@ -416,23 +416,27 @@ main {
 
 /* Creating Todos */
 
-.btn-create,
-.btn-close {
+/* -Buttons */
+.btn-create {
 	position: absolute;
 	z-index: 1;
 
 	width: 3.5em;
 	height: 3.5em;
 
+	background-image: -webkit-linear-gradient(bottom right, var(--russian-violet), var(--space-cadet));
+	background-image: -moz-linear-gradient(bottom right, var(--russian-violet), var(--space-cadet));
+	background-image: linear-gradient(to top left, var(--russian-violet), var(--space-cadet));
+}
+
+.btn-create,
+.btn-close {
 	border-radius: 50%;
 	background-size: 200% auto;
-	background-image: -webkit-linear-gradient(top left, var(--russian-violet), var(--space-cadet));
-	background-image: -moz-linear-gradient(top left, var(--russian-violet), var(--space-cadet));
-	background-image: linear-gradient(to top left, var(--russian-violet), var(--space-cadet));
 
-	box-shadow: 1px 1px 6px 0px rgba(0, 0, 0, 0.75);
-	-webkit-box-shadow: 1px 1px 6px 0px rgba(0, 0, 0, 0.75);
-	-moz-box-shadow: 1px 1px 6px 0px rgba(0, 0, 0, 0.75);
+	box-shadow: 1px 1px 10px 0px rgba(0, 0, 0, 0.75);
+	-webkit-box-shadow: 1px 1px 10px 0px rgba(0, 0, 0, 0.75);
+	-moz-box-shadow: 1px 1px 10px 0px rgba(0, 0, 0, 0.75);
 
 	transition: all 200ms cubic-bezier(0.25, 0.8, 0.25, 1);
 }
@@ -444,16 +448,16 @@ main {
 
 .btn-create::before {
 	content: "\f067";
+	position: absolute;
+	transform: translate(-50%, -50%);
 	top: 55%;
 	left: 45%;
+	font-size: 2em;
 }
 
 .btn-create::before,
 .btn-close::before {
-	position: absolute;
-	transform: translate(-50%, -50%);
 	color: var(--light-gray);
-	font-size: 2em;
 }
 
 .btn-create:active,
@@ -463,7 +467,8 @@ main {
 	background-position: center right;
 }
 
-.btn-create.fade-out {
+.btn-create.fade-out,
+.btn-close.fade-out {
 	transform: scale(0);
 }
 
@@ -473,34 +478,109 @@ main {
 }
 
 .btn-close {
-	right: 2em;
-	top: 2em;
+	display: inline-block;
+	width: 2.5em;
+	height: 2.5em;
+
+	background-image: -webkit-linear-gradient(top left, var(--russian-violet), var(--space-cadet));
+	background-image: -moz-linear-gradient(top left, var(--russian-violet), var(--space-cadet));
+	background-image: linear-gradient(to bottom right, var(--russian-violet) 45%, var(--space-cadet) 65%);
 }
 
 .btn-close::before {
 	content: "\f00d";
-	left: 48%;
-	top: 58%;
+	position: relative;
+	top: 30%;
+	left: 30%;
+	font-size: 1.5em;
 }
 
+/* -Form Content */
+
 .new-todo {
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	z-index: 9999;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1em;
 
-	background-color: var(--dark-gray);
-
+	max-height: 0;
 	transform: scale(0);
-	transition: transform 250ms ease-in-out;
+	overflow: hidden;
+	transition: max-height 250ms ease-out, padding 200ms ease-in, transform 300ms ease-in-out;
 }
 
 .new-todo.active {
+	max-height: 600px;
+	padding: 1em 2em;
 	transform: scale(1);
 }
 
 .new-todo__form {
-	padding: 2em;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.5em;
+	padding: 1em;
+	width: 100%;
+
+	color: var(--light-gray);
+	background-color: var(--oxford-blue);
+	border-radius: var(--border-radius);
+	border: 2px solid var(--violet-blue);
+}
+
+.new-todo__form label {
+	display: block;
+	text-transform: capitalize;
+
+	font-size: 1.2em;
+}
+
+.new-todo__form input {
+	width: 100%;
+	margin-top: -0.3em;
+	margin-bottom: 0.5em;
+
+	text-align: center;
+	font-size: 1.1em;
+	color: var(--light-gray);
+	background-color: transparent;
+}
+
+/* --Slider */
+.slidecontainer {
+	width: 100%; /* Width of the outside container */
+}
+
+/* The slider itself */
+.slider {
+	-webkit-appearance: none; /* Override default CSS styles */
+	appearance: none;
+	width: 100%; /* Full-width */
+	border-radius: 1em;
+	background-color: var(--light-gray) !important; /* Grey background */
+	outline: none; /* Remove outline */
+	opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+	-webkit-transition: 200ms; /* 0.2 seconds transition on hover */
+	transition: opacity 200ms ease-out;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+	opacity: 1; /* Fully shown on mouse-over */
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+	-webkit-appearance: none; /* Override default look */
+	appearance: none;
+}
+
+.slider::-webkit-slider-thumb,
+.slider::-moz-range-thumb {
+	width: 1em; /* Set a specific slider handle width */
+	height: 1em; /* Slider handle height */
+	border-radius: 50%;
+	cursor: pointer; /* Cursor on hover */
+	background-color: var(--china-rose);
 }

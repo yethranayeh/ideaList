@@ -6,8 +6,8 @@ export default class Todo {
 		this.description = description;
 		this.dueDate = dueDate;
 		this.priority = priority;
-		this.notes = notes;
-		this.checklist = checklist;
+		this.notes = notes ? notes : null;
+		this.checklist = checklist ? checklist : null;
 		this.isComplete = false;
 		this.tags = [];
 	}
