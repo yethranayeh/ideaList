@@ -529,58 +529,70 @@ main {
 	border: 2px solid var(--violet-blue);
 }
 
-.new-todo__form label {
+.new-todo__form .label {
 	display: block;
 	text-transform: capitalize;
-
 	font-size: 1.2em;
 }
 
 .new-todo__form input {
 	width: 100%;
 	margin-top: -0.3em;
-	margin-bottom: 0.5em;
+	margin-bottom: 0.8em;
 
-	text-align: center;
 	font-size: 1.1em;
 	color: var(--light-gray);
 	background-color: transparent;
+	transition: all 250ms ease-out;
 }
 
-/* --Slider */
-.slidecontainer {
-	width: 100%; /* Width of the outside container */
+.new-todo__form input:not(.slider) {
+	border-bottom: 2px solid var(--dark-byzantium);
 }
 
-/* The slider itself */
-.slider {
-	-webkit-appearance: none; /* Override default CSS styles */
-	appearance: none;
-	width: 100%; /* Full-width */
-	border-radius: 1em;
-	background-color: var(--light-gray) !important; /* Grey background */
-	outline: none; /* Remove outline */
-	opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-	-webkit-transition: 200ms; /* 0.2 seconds transition on hover */
-	transition: opacity 200ms ease-out;
+input[type="date"] {
+	text-align: center;
 }
 
-/* Mouse-over effects */
-.slider:hover {
-	opacity: 1; /* Fully shown on mouse-over */
+.new-todo__form input:focus-visible,
+.new-todo__form input:hover {
+	border-bottom-color: var(--china-rose);
 }
 
-/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
-.slider::-webkit-slider-thumb {
-	-webkit-appearance: none; /* Override default look */
-	appearance: none;
+/* Priority Radios */
+#form-priority {
+	display: flex;
+	justify-content: center;
+	gap: 0.9em;
+
+	width: 100%;
+	margin-bottom: 0.8em;
 }
 
-.slider::-webkit-slider-thumb,
-.slider::-moz-range-thumb {
-	width: 1em; /* Set a specific slider handle width */
-	height: 1em; /* Slider handle height */
+#form-priority label {
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	width: 2em;
+	height: 2em;
+	padding: 0.6em;
+
+	font-size: 1.4em;
+	border: 2px solid var(--dark-byzantium);
 	border-radius: 50%;
-	cursor: pointer; /* Cursor on hover */
-	background-color: var(--china-rose);
+	transition: all 250ms ease-out;
+}
+
+#form-priority input:hover + label,
+#form-priority input:checked + label {
+	border-color: var(--china-rose);
+}
+
+#form-priority input:checked + label {
+	transform: scale(1.1);
+}
+
+#form-priority input {
+	display: none;
+	appearance: none;
 }

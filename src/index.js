@@ -191,6 +191,16 @@ DOM.newTodoForm.closeBtn.addEventListener("click", (e) => {
 	DOM.newTodoElementsToggle();
 });
 
+// DOM.newTodoForm.self.querySelectorAll('input:not([id="form-dueDate"])').forEach((input) => {
+// 	input.addEventListener("onfocus", (e) => {
+// 		DOM.newTodoForm.self.querySelector(`label[for="${e.target.id}"]`).add("input-focused");
+// 	});
+
+// 	input.addEventListener("onfocusout", (e) => {
+// 		DOM.newTodoForm.self.querySelector(`label[for="${e.target.id}"]`).remove("input-focused");
+// 	});
+// });
+
 // SUBSCRIBE EVENTS
 PubSub.subscribe(E.translationDone, () => {
 	// Change language of date display on navbar

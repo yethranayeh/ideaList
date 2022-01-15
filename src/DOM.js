@@ -210,7 +210,7 @@ const DOM = {
 	})(),
 	newTodoForm: (function () {
 		let container = document.createElement("div");
-		container.classList.add("new-todo");
+		container.classList.add("new-todo", "active");
 
 		let closeBtn = document.createElement("i");
 		closeBtn.classList.add("btn-close", "fade-out");
@@ -229,20 +229,38 @@ const DOM = {
 			label.setAttribute("for", id);
 
 			let input = document.createElement("input");
-			input.id = id;
+
 			if (element === "title") {
 				input.setAttribute("required", "true");
 			} else if (element === "dueDate") {
 				label.textContent = "Due Date";
 				input.type = "date";
 			} else if (element === "priority") {
-				input.classList.add("slider");
-				input.type = "range";
-				input.min = 0;
-				input.max = 3;
-				input.value = 0;
-				input.setAttribute("autocomplete", "off");
+				// Label changed to span
+				label = document.createElement("span");
+				label.textContent = element;
+				// Input changed to container
+				input = document.createElement("div");
+				let prios = ["-", "!", "!!", "!!!"];
+				for (let i = 0; i < prios.length; i++) {
+					let radioID = `prio-${i}`;
+
+					let radio = document.createElement("input");
+					radio.type = "radio";
+					radio.id = radioID;
+					radio.name = "priority";
+
+					let radioLabel = document.createElement("label");
+					radioLabel.textContent = prios[i];
+					radioLabel.setAttribute("for", radioID);
+
+					input.appendChild(radio);
+					input.appendChild(radioLabel);
+				}
 			}
+
+			input.id = id;
+			label.classList.add("label", "disable-select");
 
 			form.appendChild(label);
 			form.appendChild(input);
@@ -342,18 +360,14 @@ const DOM = {
 				due.classList.add("todo-due-date");
 				due.textContent = todo.dueDate;
 
-				let todoCategory = document.createElement("p");
-				todoCategory.textContent = todo.tags;
+				let todoTags = document.createElement("ul");
+				todo.tags.forEach((tag) => {
+					let li = document.createElement("li");
+					li.textContent = tag;
+					todoTags.appendChild(li);
+				});
 
-				appendTo(subtext, [priority, due, todoCategory]);
-
-				// When todo.category is changed to todo.tags, use this:
-				// let todoTags = document.createElement("ul");
-				// todo.tags.forEach((tag) => {
-				// 	let li = document.createElement("li");
-				// 	li.textContent = tag;
-				// 	todoTags.appendChild(li);
-				// });
+				appendTo(subtext, [priority, due, todoTags]);
 
 				appendTo(todoContent, [title, infoContainer, subtext]);
 				appendTo(container, [todoContent]);
