@@ -253,6 +253,7 @@ const DOM = {
 				label.textContent = element;
 				// Input changed to container
 				input = document.createElement("div");
+				input.classList.add("disable-select");
 				let prios = ["-", "!", "!!", "!!!"];
 				for (let i = 0; i < prios.length; i++) {
 					let radioID = `prio-${i}`;
