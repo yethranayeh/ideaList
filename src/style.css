@@ -529,16 +529,27 @@ main {
 	border: 2px solid var(--violet-blue);
 }
 
+.pseudo-table {
+	display: table;
+	width: 100%;
+	text-align: center;
+	border-collapse: separate;
+	border-spacing: 0 0.2em;
+}
+
 .new-todo__form .label {
-	display: block;
+	display: table-header-group;
 	text-transform: capitalize;
 	font-size: 1.2em;
 }
 
 .new-todo__form input {
+	display: table-row-group;
 	width: 100%;
 	margin-top: -0.3em;
 	margin-bottom: 0.8em;
+
+	vertical-align: middle;
 
 	font-size: 1.1em;
 	color: var(--light-gray);
@@ -546,7 +557,7 @@ main {
 	transition: all 250ms ease-out;
 }
 
-.new-todo__form input:not(.slider) {
+.new-todo__form input {
 	border-bottom: 2px solid var(--dark-byzantium);
 }
 
@@ -554,9 +565,41 @@ input[type="date"] {
 	text-align: center;
 }
 
-.new-todo__form input:focus-visible,
+.new-todo__form input:focus,
 .new-todo__form input:hover {
 	border-bottom-color: var(--china-rose);
+}
+
+/* Optional fields are collapsed initially */
+.new-todo__form :optional {
+	max-height: 0;
+	transform-origin: center;
+	transform: scaleX(10%);
+}
+
+.new-todo__form :optional:focus {
+	transform: scaleX(100%);
+	max-height: 3em;
+}
+
+#form-description + .label::after,
+#form-notes + .label::after,
+#form-checklist + .label::after {
+	content: "\f067";
+	overflow: visible;
+	font-size: 1em;
+	color: var(--china-rose);
+	margin-left: 0.5em;
+	letter-spacing: 0.07em;
+	cursor: pointer;
+	transition: all 250ms ease-out;
+}
+
+#form-description:focus + .label::after,
+#form-notes:focus + .label::after,
+#form-checklist:focus + .label::after,
+.input-received {
+	font-size: 0;
 }
 
 /* Priority Radios */

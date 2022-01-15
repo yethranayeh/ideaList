@@ -210,7 +210,7 @@ const DOM = {
 	})(),
 	newTodoForm: (function () {
 		let container = document.createElement("div");
-		container.classList.add("new-todo", "active");
+		container.classList.add("new-todo");
 
 		let closeBtn = document.createElement("i");
 		closeBtn.classList.add("btn-close", "fade-out");
@@ -275,11 +275,16 @@ const DOM = {
 				}
 			}
 
+			let pseuodTable = document.createElement("div");
+			pseuodTable.classList.add("pseudo-table");
+
 			input.id = id;
 			label.classList.add("label", "disable-select");
-
-			form.appendChild(label);
-			form.appendChild(input);
+			pseuodTable.appendChild(input);
+			pseuodTable.appendChild(label);
+			// form.appendChild(label);
+			// form.appendChild(input);
+			form.appendChild(pseuodTable);
 		}
 
 		container.appendChild(form);
