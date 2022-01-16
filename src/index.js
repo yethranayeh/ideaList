@@ -184,23 +184,27 @@ DOM.main.self.querySelectorAll(".todo-note").forEach((note) => {
 	});
 });
 
+// -Create new Todo
 DOM.newTodoBtn.addEventListener("click", (e) => {
 	DOM.newTodoElementsToggle();
 });
 
-DOM.newTodoForm.closeBtn.addEventListener("click", (e) => {
+// -Close new Todo form
+DOM.newTodoForm.btnClose.addEventListener("click", (e) => {
 	DOM.newTodoElementsToggle();
 });
 
-// DOM.newTodoForm.self.querySelectorAll('input:not([id="form-dueDate"])').forEach((input) => {
-// 	input.addEventListener("onfocus", (e) => {
-// 		DOM.newTodoForm.self.querySelector(`label[for="${e.target.id}"]`).add("input-focused");
-// 	});
+// -New Todo Form submit button
+DOM.newTodoForm.btnAdd.addEventListener("click", (e) => {
+	if (DOM.newTodoForm.isValid()) {
+		DOM.newTodoElementsToggle();
+	}
+});
 
-// 	input.addEventListener("onfocusout", (e) => {
-// 		DOM.newTodoForm.self.querySelector(`label[for="${e.target.id}"]`).remove("input-focused");
-// 	});
-// });
+// -New Todo Form on submit
+DOM.newTodoForm.self.addEventListener("submit", (e) => {
+	e.preventDefault();
+});
 
 // SUBSCRIBE EVENTS
 PubSub.subscribe(E.translationDone, () => {

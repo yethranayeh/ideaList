@@ -14,6 +14,11 @@
 	--light-gray: #fefefe;
 	--dark-gray: #777777;
 	--border-radius: 0.6rem;
+	--font-default: "Josefin Sans", sans-serif;
+	--font-awesome: "Font Awesome 5 Free";
+	--content-plus: "\f067";
+	--content-times: "\f00d";
+	--content-hashtag: "\f292";
 }
 
 /* Start: General */
@@ -32,7 +37,7 @@ body {
 
 body {
 	overflow: hidden;
-	font-family: "Josefin Sans", sans-serif;
+	font-family: var(--font-default);
 	background: var(--space-cadet);
 	background: -webkit-linear-gradient(top left, var(--space-cadet), var(--russian-violet));
 	background: -moz-linear-gradient(top left, var(--space-cadet), var(--russian-violet));
@@ -252,19 +257,23 @@ aside li.active::before {
 }
 
 aside li.tag::before {
-	content: "\f292";
+	content: var(--content-hashtag);
+	font-family: var(--font-awesome);
 }
 
 aside li.day::before {
 	content: "\f783";
+	font-family: var(--font-awesome);
 }
 
 aside li.week::before {
 	content: "\f784";
+	font-family: var(--font-awesome);
 }
 
 aside li.month::before {
 	content: "\f133";
+	font-family: var(--font-awesome);
 }
 
 /* -Language Switch */
@@ -391,6 +400,7 @@ main {
 
 .todo-note::before {
 	content: "\f249  Notes";
+	font-family: var(--font-awesome);
 	font-size: 16px;
 	word-spacing: 0.2em;
 }
@@ -401,6 +411,7 @@ main {
 
 .todo-note::after {
 	content: "\f00d";
+	font-family: var(--font-awesome);
 	display: inline;
 	font-size: 0;
 	margin-left: 0.5em;
@@ -449,7 +460,8 @@ main {
 }
 
 .btn-create::before {
-	content: "\f067";
+	content: var(--content-plus);
+	font-family: var(--font-awesome);
 	position: absolute;
 	transform: translate(-50%, -50%);
 	top: 55%;
@@ -490,7 +502,8 @@ main {
 }
 
 .btn-close::before {
-	content: "\f00d";
+	content: var(--content-times);
+	font-family: var(--font-awesome);
 	position: relative;
 	top: 30%;
 	left: 30%;
@@ -512,7 +525,7 @@ main {
 }
 
 .new-todo.active {
-	max-height: 600px;
+	max-height: 100%;
 	padding: 1em 2em;
 	transform: scale(1);
 }
@@ -524,6 +537,8 @@ main {
 	gap: 0.5em;
 	padding: 1em;
 	width: 100%;
+	/* max-height: 100%;
+	overflow-y: auto; */
 
 	color: var(--light-gray);
 	background-color: var(--oxford-blue);
@@ -573,21 +588,24 @@ input[type="date"] {
 }
 
 /* Optional fields are collapsed initially */
-.new-todo__form :optional {
+.new-todo__form input:optional {
 	max-height: 0;
 	transform-origin: center;
 	transform: scaleX(10%);
+	border-bottom-color: transparent;
 }
 
-.new-todo__form :optional:focus {
+.new-todo__form input:optional:focus {
 	transform: scaleX(100%);
 	max-height: 3em;
+	border-bottom-color: var(--china-rose);
 }
 
 #form-description + .label::after,
 #form-notes + .label::after,
 #form-checklist + .label::after {
-	content: "\f067";
+	content: var(--content-plus);
+	font-family: "Font Awesome 5 Free";
 	overflow: visible;
 	font-size: 1em;
 	color: var(--china-rose);
@@ -640,4 +658,41 @@ input[type="date"] {
 #form-priority input {
 	display: none;
 	appearance: none;
+}
+
+/* Add Todo (Submit Button) */
+.btn-add-todo {
+	/* display: -webkit-box; */
+	/* display: -moz-box; */
+	/* display: -ms-flexbox; */
+	/* display: -webkit-flex; */
+	/* display: inline-flex; */
+	/* align-items: center; */
+	/* justify-content: center; */
+
+	padding: 0.2em 1em;
+	font-size: 1.2em;
+	line-height: normal;
+	color: var(--light-gray);
+	border-radius: var(--border-radius);
+	border: 2px solid var(--dark-byzantium);
+	background-color: var(--oxford-blue);
+	transition: transform 250ms ease-out, background-color 200ms ease-in, border-color 200ms ease-out;
+}
+
+.btn-add-todo:hover,
+.btn-add-todo:active {
+	/* background-color: var(--space-cadet); */
+	border-color: var(--china-rose);
+}
+
+.btn-add-todo:active {
+	transform: translateY(0.2em);
+}
+
+.btn-add-todo::before {
+	content: var(--content-plus);
+	font-family: var(--font-awesome);
+	margin-right: 0.5em;
+	letter-spacing: 0.07em;
 }

@@ -212,9 +212,9 @@ const DOM = {
 		let container = document.createElement("div");
 		container.classList.add("new-todo");
 
-		let closeBtn = document.createElement("i");
-		closeBtn.classList.add("btn-close", "fade-out");
-		container.appendChild(closeBtn);
+		let btnClose = document.createElement("i");
+		btnClose.classList.add("btn-close", "fade-out");
+		container.appendChild(btnClose);
 
 		let form = document.createElement("form");
 		form.classList.add("new-todo__form");
@@ -288,13 +288,31 @@ const DOM = {
 			form.appendChild(pseuodTable);
 		}
 
+		let btnAddContaier = document.createElement("div");
+		btnAddContaier.classList.add("pseudo-table");
+		let btnAdd = document.createElement("button");
+		// btnAdd.type = "submit";
+		btnAdd.textContent = "Add";
+		btnAdd.classList.add("btn-add-todo");
+		btnAddContaier.appendChild(btnAdd);
+		form.appendChild(btnAddContaier);
+
 		container.appendChild(form);
 
-		return { self: container, closeBtn: closeBtn, form: form };
+		function isValid() {
+			let reqInputs = form.querySelectorAll(":required");
+			let valid = true;
+			for (let input of reqInputs) {
+				if (!input.checkValidity()) valid = false;
+			}
+			return valid;
+		}
+
+		return { self: container, btnClose: btnClose, btnAdd: btnAdd, form: form, isValid: isValid };
 	})(),
 	newTodoElementsToggle: function () {
 		this.newTodoForm.self.classList.toggle("active");
-		this.newTodoForm.closeBtn.classList.toggle("fade-out");
+		this.newTodoForm.btnClose.classList.toggle("fade-out");
 		this.newTodoBtn.classList.toggle("fade-out");
 	},
 	/**
