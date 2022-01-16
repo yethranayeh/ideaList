@@ -172,6 +172,7 @@ nav {
 
 /* Container for Sidebar and Main */
 .container {
+	/* --nav-height: JavaScript calculated variable */
 	margin-top: var(--nav-height);
 	margin-bottom: 1em;
 	min-height: calc(100vh - var(--nav-height));
@@ -434,6 +435,8 @@ main {
 	position: absolute;
 	z-index: 1;
 
+	bottom: 2em;
+	right: 2em;
 	width: 3.5em;
 	height: 3.5em;
 
@@ -454,12 +457,7 @@ main {
 	transition: all 200ms cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-.btn-create {
-	bottom: 2em;
-	right: 2em;
-}
-
-.btn-create::before {
+/* .btn-create::before {
 	content: var(--content-plus);
 	font-family: var(--font-awesome);
 	position: absolute;
@@ -467,11 +465,15 @@ main {
 	top: 55%;
 	left: 45%;
 	font-size: 2em;
-}
+} */
 
-.btn-create::before,
-.btn-close::before {
+.btn-create,
+.btn-close {
 	color: var(--light-gray);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.1em;
 }
 
 .btn-create:active,
@@ -492,22 +494,12 @@ main {
 }
 
 .btn-close {
-	display: inline-block;
 	width: 2.5em;
 	height: 2.5em;
 
 	background-image: -webkit-linear-gradient(top left, var(--russian-violet), var(--space-cadet));
 	background-image: -moz-linear-gradient(top left, var(--russian-violet), var(--space-cadet));
 	background-image: linear-gradient(to bottom right, var(--russian-violet) 45%, var(--space-cadet) 65%);
-}
-
-.btn-close::before {
-	content: var(--content-times);
-	font-family: var(--font-awesome);
-	position: relative;
-	top: 30%;
-	left: 30%;
-	font-size: 1.5em;
 }
 
 /* -Form Content */
@@ -518,14 +510,20 @@ main {
 	align-items: center;
 	gap: 1em;
 
-	max-height: 0;
+	/* 
+	--min-height is a JavaScript calculated height. 
+	It is not hard-coded to 0 because JavaScript needs to calculate the offsetHeight of this element
+	Setting max-height: 0; prevents JavaScript from accurately returning offsetHeight, instead returns 0
+	*/
+	max-height: var(--min-height);
 	transform: scale(0);
 	overflow: hidden;
 	transition: max-height 250ms ease-out, padding 200ms ease-in, transform 300ms ease-in-out;
 }
 
 .new-todo.active {
-	max-height: 100%;
+	/* --max-height is a JavaScript calculated height of the object + some extra pixels to play it safe */
+	max-height: var(--max-height);
 	padding: 1em 2em;
 	transform: scale(1);
 }
@@ -537,8 +535,6 @@ main {
 	gap: 0.5em;
 	padding: 1em;
 	width: 100%;
-	/* max-height: 100%;
-	overflow-y: auto; */
 
 	color: var(--light-gray);
 	background-color: var(--oxford-blue);
@@ -579,8 +575,22 @@ main {
 }
 
 input[type="date"] {
+	/* position: relative; */
 	text-align: center;
 }
+
+/* Hide calendar icon for supported browser */
+/* input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="date"]::-webkit-clear-button {
+	opacity: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	color: transparent;
+	background-color: transparent;
+} */
 
 .new-todo__form input:focus,
 .new-todo__form input:hover {
@@ -662,28 +672,22 @@ input[type="date"] {
 
 /* Add Todo (Submit Button) */
 .btn-add-todo {
-	/* display: -webkit-box; */
-	/* display: -moz-box; */
-	/* display: -ms-flexbox; */
-	/* display: -webkit-flex; */
-	/* display: inline-flex; */
-	/* align-items: center; */
-	/* justify-content: center; */
-
 	padding: 0.2em 1em;
 	font-size: 1.2em;
 	line-height: normal;
+
 	color: var(--light-gray);
 	border-radius: var(--border-radius);
-	border: 2px solid var(--dark-byzantium);
-	background-color: var(--oxford-blue);
-	transition: transform 250ms ease-out, background-color 200ms ease-in, border-color 200ms ease-out;
+	border: 2px solid var(--china-rose);
+	background-color: var(--dark-byzantium);
+
+	transition: transform 250ms ease-out, background-color 200ms ease-in;
 }
 
 .btn-add-todo:hover,
 .btn-add-todo:active {
 	/* background-color: var(--space-cadet); */
-	border-color: var(--china-rose);
+	background-color: var(--china-rose);
 }
 
 .btn-add-todo:active {

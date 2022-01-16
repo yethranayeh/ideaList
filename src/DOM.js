@@ -22,6 +22,8 @@ const DOM = {
 
 		// Main Content
 		this.mainArea.appendChild(this.newTodoForm.self);
+		let maxHeight = this.newTodoForm.self.offsetHeight + 16 * 6;
+		this.newTodoForm.self.style.cssText = `--max-height: ${maxHeight}px; --min-height: 0px`;
 		this.mainArea.appendChild(this.newTodoBtn);
 		this.mainArea.appendChild(this.main.self);
 		// Display ALL Todos on page initialization
@@ -204,16 +206,16 @@ const DOM = {
 	})(),
 	newTodoBtn: (function () {
 		let sect = document.createElement("i");
-		sect.classList.add("btn-create");
+		sect.classList.add("btn-create", "fas", "fa-plus");
 
 		return sect;
 	})(),
 	newTodoForm: (function () {
 		let container = document.createElement("div");
-		container.classList.add("new-todo");
+		container.classList.add("new-todo", "active");
 
 		let btnClose = document.createElement("i");
-		btnClose.classList.add("btn-close", "fade-out");
+		btnClose.classList.add("btn-close", "fas", "fa-times", "fade-out");
 		container.appendChild(btnClose);
 
 		let form = document.createElement("form");
@@ -283,8 +285,6 @@ const DOM = {
 			label.classList.add("label", "disable-select");
 			pseuodTable.appendChild(input);
 			pseuodTable.appendChild(label);
-			// form.appendChild(label);
-			// form.appendChild(input);
 			form.appendChild(pseuodTable);
 		}
 
