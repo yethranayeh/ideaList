@@ -117,7 +117,7 @@ const DOM = {
 		// Filters
 		const filters = document.createElement("div");
 
-		// Filter by Tag
+		// Start: Tag Filters
 		const tagsHeader = document.createElement("h2");
 		tagsHeader.setAttribute("data-key", "tags-header");
 		// tagsHeader.textContent = "Tags:";
@@ -146,27 +146,35 @@ const DOM = {
 		}
 		let tagContent = addToSection(tagsHeader, tagList);
 		filters.appendChild(tagContent);
+		// End: Tag Filters
 
-		// Filter by Date
+		// Start: Date Filters
 		const dateHeader = document.createElement("h2");
 		dateHeader.setAttribute("data-key", "date-header");
 		aside.appendChild(dateHeader);
 
-		// const dateOpts = ["Today", "This Week", "This Month"];
-		const dateIconClasses = ["day", "week", "month"];
+		const dateIconClasses = ["-day", "-week", ""];
+		const dateDataKeys = ["day", "week", "month"];
 		const dateList = document.createElement("ul");
 		const dates = [];
 		for (let i = 0; i < 3; i++) {
 			let li = document.createElement("li");
-			li.setAttribute("data-key", `date-filter-${dateIconClasses[i]}`);
-			li.classList.add("date", dateIconClasses[i]);
-			// li.textContent = dateOpts[i];
+
+			let liIcon = document.createElement("i");
+			liIcon.classList.add("fas", `fa-calendar${dateIconClasses[i]}`);
+			li.appendChild(liIcon);
+
+			let liText = document.createElement("span");
+			liText.setAttribute("data-key", `date-filter-${dateDataKeys[i]}`);
+			li.appendChild(liText);
+
 			dateList.appendChild(li);
 			dates.push(li);
 		}
 		const dateContent = addToSection(dateHeader, dateList);
 		filters.appendChild(dateContent);
 		aside.appendChild(filters);
+		// End: Date Filters
 
 		// Change locale
 		const localeSect = document.createElement("form");
@@ -251,7 +259,6 @@ const DOM = {
 			if (element === "title") {
 				input.required = true;
 			} else if (element === "dueDate") {
-				// label.textContent = "Due Date";
 				input.type = "text";
 				input.required = true;
 
