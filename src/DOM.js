@@ -1,5 +1,8 @@
 /** @format */
 
+import flatpickr from "flatpickr";
+require("flatpickr/dist/themes/dark.css");
+
 export { DOM as default };
 
 const DOM = {
@@ -223,6 +226,9 @@ const DOM = {
 
 		const formElements = ["title", "description", "dueDate", "priority", "notes", "checklist"];
 
+		// Flatpickr instance
+		let fp;
+
 		for (let element of formElements) {
 			let id = `form-${element}`;
 
@@ -236,19 +242,18 @@ const DOM = {
 				input.required = true;
 			} else if (element === "dueDate") {
 				label.textContent = "Due Date";
-				input.type = "date";
-				let dtToday = new Date();
-
-				let month = dtToday.getMonth() + 1;
-				let day = dtToday.getDate();
-				let year = dtToday.getFullYear();
-
-				if (month < 10) month = "0" + month.toString();
-				if (day < 10) day = "0" + day.toString();
-
-				let minDate = year + "-" + month + "-" + day;
-				input.min = input.value = minDate;
+				input.type = "text";
 				input.required = true;
+
+				// Flatpickr
+				fp = flatpickr(input, {
+					enableTime: true,
+					time_24hr: true,
+					dateFormat: "d.m.Y - H:i",
+					minDate: "today",
+					defaultDate: "today",
+					disableMobile: "true"
+				});
 			} else if (element === "priority") {
 				// Label changed to span
 				label = document.createElement("span");
@@ -308,7 +313,7 @@ const DOM = {
 			return valid;
 		}
 
-		return { self: container, btnClose: btnClose, btnAdd: btnAdd, form: form, isValid: isValid };
+		return { self: container, btnClose: btnClose, btnAdd: btnAdd, form: form, isValid: isValid, fp: fp };
 	})(),
 	newTodoElementsToggle: function () {
 		this.newTodoForm.self.classList.toggle("active");

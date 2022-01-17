@@ -574,7 +574,7 @@ main {
 	border-bottom: 2px solid var(--dark-byzantium);
 }
 
-input[type="date"] {
+input[id="form-dueDate"] {
 	/* position: relative; */
 	text-align: center;
 }
