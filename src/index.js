@@ -242,7 +242,7 @@ PubSub.subscribe(E.filterClicked, () => {
 	let actives = [...document.querySelectorAll(".tag.active")];
 	let tags = [];
 	actives.forEach((active) => {
-		if (active.textContent === "All") {
+		if (active.id === "filterAll") {
 			return;
 		} else {
 			tags.push(active.textContent);

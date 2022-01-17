@@ -237,27 +237,24 @@ aside li {
 	transition: all 250ms ease-out;
 }
 
+aside #filterAll > * {
+	pointer-events: none;
+}
+
 aside li.active {
 	color: var(--china-rose);
 	border: 2px solid var(--china-rose);
 	background-color: var(--oxford-blue);
 }
 
-aside li::before {
-	font-family: "Font Awesome 5 Free";
-	font-weight: 900;
+aside li i::before {
 	font-size: 0.9em;
 	color: var(--dark-gray);
 	margin-right: 5px;
 }
 
-aside li.active::before {
+aside li.active i::before {
 	color: var(--light-gray);
-}
-
-aside li.tag::before {
-	content: var(--content-hashtag);
-	font-family: var(--font-awesome);
 }
 
 aside li.day::before {
@@ -610,23 +607,16 @@ input[type="date"]::-webkit-clear-button {
 	border-bottom-color: var(--china-rose);
 }
 
-#form-description + .label::after,
-#form-notes + .label::after,
-#form-checklist + .label::after {
-	content: var(--content-plus);
-	font-family: "Font Awesome 5 Free";
-	overflow: visible;
-	font-size: 1em;
-	color: var(--china-rose);
+.add-optional-input {
 	margin-left: 0.5em;
-	letter-spacing: 0.07em;
 	cursor: pointer;
+	color: var(--china-rose);
 	transition: all 250ms ease-out;
 }
 
-#form-description:focus + .label::after,
-#form-notes:focus + .label::after,
-#form-checklist:focus + .label::after,
+#form-description:focus + .label > .add-optional-input,
+#form-notes:focus + .label > .add-optional-input,
+#form-checklist:focus + .label > .add-optional-input,
 .input-received {
 	font-size: 0;
 }
@@ -695,9 +685,7 @@ input[type="date"]::-webkit-clear-button {
 	transform: translateY(0.2em);
 }
 
-.btn-add-todo::before {
-	content: var(--content-plus);
-	font-family: var(--font-awesome);
+.btn-add-todo__icon {
 	margin-right: 0.5em;
 	letter-spacing: 0.07em;
 }

@@ -5,5 +5,12 @@
 	"date-options": ["Bugün", "Bu Hafta", "Bu Ay"],
 	"date-filter-day": "Bugün",
 	"date-filter-week": "Bu Hafta",
-	"date-filter-month": "Bu Ay"
+	"date-filter-month": "Bu Ay",
+	"title": "Başlık",
+	"description": "Açıklama",
+	"dueDate": "Bitiş Tarihi",
+	"priority": "Öncelik",
+	"notes": "Notlar",
+	"checklist": "Yapılacaklar Listesi",
+	"btn-add-todo": "Ekle"
 }

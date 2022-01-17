@@ -5,5 +5,12 @@
 	"date-options": ["Today", "This Week", "This Month"],
 	"date-filter-day": "Today",
 	"date-filter-week": "This Week",
-	"date-filter-month": "This Month"
+	"date-filter-month": "This Month",
+	"title": "Title",
+	"description": "Description",
+	"dueDate": "Due Date",
+	"priority": "Priority",
+	"notes": "Notes",
+	"checklist": "Checklist",
+	"btn-add-todo": "Add"
 }

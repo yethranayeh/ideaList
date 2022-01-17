@@ -128,11 +128,18 @@ const DOM = {
 		for (let key in todoList) {
 			let li = document.createElement("li");
 			li.classList.add("tag");
-			li.textContent = key;
+			let icon = document.createElement("i");
+			icon.classList.add("fas", "fa-hashtag");
+			li.appendChild(icon);
+
 			if (key === "all") {
+				let text = document.createElement("span");
 				li.id = "filterAll";
 				li.classList.add("active");
-				li.setAttribute("data-key", "tag-all");
+				text.setAttribute("data-key", "tag-all");
+				li.appendChild(text);
+			} else {
+				li.innerHTML += key;
 			}
 			tagList.appendChild(li);
 			tags.push(li);
@@ -233,7 +240,10 @@ const DOM = {
 			let id = `form-${element}`;
 
 			let label = document.createElement("label");
-			label.textContent = element;
+			let lblText = document.createElement("span");
+			lblText.textContent = element;
+			lblText.setAttribute("data-key", element);
+			label.appendChild(lblText);
 			label.setAttribute("for", id);
 
 			let input = document.createElement("input");
@@ -241,7 +251,7 @@ const DOM = {
 			if (element === "title") {
 				input.required = true;
 			} else if (element === "dueDate") {
-				label.textContent = "Due Date";
+				// label.textContent = "Due Date";
 				input.type = "text";
 				input.required = true;
 
@@ -258,6 +268,8 @@ const DOM = {
 				// Label changed to span
 				label = document.createElement("span");
 				label.textContent = element;
+				label.setAttribute("data-key", element);
+
 				// Input changed to container
 				input = document.createElement("div");
 				input.classList.add("disable-select");
@@ -281,6 +293,11 @@ const DOM = {
 					input.appendChild(radio);
 					input.appendChild(radioLabel);
 				}
+			} else if (["description", "notes", "checklist"].includes(element)) {
+				// Font awesome plus icon
+				let faPlus = document.createElement("i");
+				faPlus.classList.add("fas", "fa-plus", "add-optional-input");
+				label.appendChild(faPlus);
 			}
 
 			let pseuodTable = document.createElement("div");
@@ -293,14 +310,24 @@ const DOM = {
 			form.appendChild(pseuodTable);
 		}
 
+		// Start: Add Todo Button
 		let btnAddContaier = document.createElement("div");
 		btnAddContaier.classList.add("pseudo-table");
+
 		let btnAdd = document.createElement("button");
-		// btnAdd.type = "submit";
-		btnAdd.textContent = "Add";
 		btnAdd.classList.add("btn-add-todo");
+
+		let btnAddIcon = document.createElement("i");
+		btnAddIcon.classList.add("fas", "fa-plus", "btn-add-todo__icon");
+		btnAdd.appendChild(btnAddIcon);
+
+		let btnAddText = document.createElement("span");
+		btnAddText.setAttribute("data-key", "btn-add-todo");
+		btnAdd.appendChild(btnAddText);
+
 		btnAddContaier.appendChild(btnAdd);
 		form.appendChild(btnAddContaier);
+		// End: Add Todo Button
 
 		container.appendChild(form);
 
