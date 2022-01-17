@@ -201,14 +201,12 @@ aside {
 	background-size: cover;
 
 	color: var(--light-gray);
-	transform: translateX(-100%);
-	opacity: 0;
-	transition: transform 250ms ease-in-out, opacity 250ms ease-out;
+	left: -125%;
+	transition: left 450ms cubic-bezier(0.83, 0, 0.17, 1);
 }
 
 aside.active {
-	transform: translateX(0);
-	opacity: 100%;
+	left: 0;
 }
 
 aside section {
