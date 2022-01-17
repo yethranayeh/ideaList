@@ -215,7 +215,7 @@ const DOM = {
 	})(),
 	newTodoForm: (function () {
 		let container = document.createElement("div");
-		container.classList.add("new-todo", "active");
+		container.classList.add("new-todo");
 
 		let btnClose = document.createElement("i");
 		btnClose.classList.add("btn-close", "fas", "fa-times", "fade-out");

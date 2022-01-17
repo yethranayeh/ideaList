@@ -474,6 +474,7 @@ main {
 	justify-content: center;
 	align-items: center;
 	font-size: 1.1em;
+	cursor: pointer;
 }
 
 .btn-create:active,
@@ -649,6 +650,7 @@ input[type="date"]::-webkit-clear-button {
 	width: 2em;
 	height: 2em;
 	padding: 0.6em;
+	cursor: pointer;
 
 	font-size: 1.4em;
 	border: 2px solid var(--dark-byzantium);
@@ -675,6 +677,7 @@ input[type="date"]::-webkit-clear-button {
 	padding: 0.2em 1em;
 	font-size: 1.2em;
 	line-height: normal;
+	cursor: pointer;
 
 	color: var(--light-gray);
 	border-radius: var(--border-radius);
