@@ -16,7 +16,8 @@ const E = {
 	searchFocused: "searchFocused",
 	searchFocusOut: "searchFocusOut",
 	filterClicked: "filterClicked",
-	translationDone: "translationDone"
+	translationDone: "translationDone",
+	formSubmitted: "formSubmitted"
 };
 
 // Initialize
@@ -69,7 +70,13 @@ async function fetchTranslationsFor(newLocale) {
 // data-i18n-key attribute with the translation corresponding
 // to its data-i18n-key
 function translatePage() {
-	document.querySelectorAll("[data-key]").forEach(translateElement);
+	DOM.body.querySelectorAll("[data-key]").forEach(translateElement);
+	DOM.body.querySelectorAll("[data-dueDate]").forEach((element) => {
+		let date = new Date(element.getAttribute("data-dueDate"));
+		element.textContent = format(date, "d MMMM, HH:mm", {
+			locale: getLocale() === "en" ? enUS : tr
+		});
+	});
 }
 
 // Replace the inner text of the given HTML element
@@ -84,14 +91,18 @@ function translateElement(element) {
 
 // Get locale language formatted Today
 function getToday() {
+	// format() is a date-fns function
+	return format(new Date(), "cccc, d", { locale: getLocale() === "en" ? enUS : tr });
+}
+
+function getLocale() {
 	let dateLocale;
 	if (locale === "en" || !locale) {
 		dateLocale = "en";
 	} else if (locale === "tr") {
 		dateLocale = "tr";
 	}
-	// format() is a date-fns function
-	return format(new Date(), "cccc, d", { locale: dateLocale === "en" ? enUS : tr });
+	return dateLocale;
 }
 
 let today = getToday();
@@ -194,11 +205,15 @@ DOM.newTodoForm.btnClose.addEventListener("click", (e) => {
 	DOM.newTodoElementsToggle();
 });
 
-// -New Todo Form submit button
+// -Toggle visibility of tags
+DOM.newTodoForm.btnShowTags.addEventListener("click", () => {
+	let container = DOM.newTodoForm.self.querySelector("#form-tags");
+	container.classList.toggle("visible");
+});
+
+// -Submit new Todo form
 DOM.newTodoForm.btnAdd.addEventListener("click", (e) => {
-	if (DOM.newTodoForm.isValid()) {
-		DOM.newTodoElementsToggle();
-	}
+	PubSub.publish(E.formSubmitted);
 });
 
 // -New Todo Form on submit
@@ -207,6 +222,8 @@ DOM.newTodoForm.self.addEventListener("submit", (e) => {
 });
 
 // SUBSCRIBE EVENTS
+
+// Translation
 PubSub.subscribe(E.translationDone, () => {
 	// Change language of date display on navbar
 	DOM.navbar.date.textContent = getToday();
@@ -215,6 +232,7 @@ PubSub.subscribe(E.translationDone, () => {
 	localStorage.setItem("TodoLanguage", locale);
 });
 
+// Hamburger Menu
 PubSub.subscribe(E.hamClicked, () => {
 	DOM.navbar.hamburger.classList.toggle("active");
 	if (DOM.navbar.hamburger.classList.contains("active")) {
@@ -224,6 +242,7 @@ PubSub.subscribe(E.hamClicked, () => {
 	}
 });
 
+// Search Box
 PubSub.subscribe(E.searchFocused, () => {
 	// Change display state of Date in Navbar
 	DOM.navbar.date.classList.add("fade-out");
@@ -238,8 +257,9 @@ PubSub.subscribe(E.searchFocusOut, () => {
 	DOM.navbar.date.classList.remove("fade-out");
 });
 
+// Filters
 PubSub.subscribe(E.filterClicked, () => {
-	let actives = [...document.querySelectorAll(".tag.active")];
+	let actives = [...DOM.body.querySelectorAll(".tag.active")];
 	let tags = [];
 	actives.forEach((active) => {
 		if (active.id === "filterAll") {
@@ -252,6 +272,17 @@ PubSub.subscribe(E.filterClicked, () => {
 	if (tags.length) {
 		DOM.displayTodos(App.todoList.all, App.getFilteredTodos(tags, [], []));
 	} else {
+		DOM.displayTodos(App.todoList["all"]);
+	}
+});
+
+// New Todo Form
+PubSub.subscribe(E.formSubmitted, () => {
+	if (DOM.newTodoForm.isValid()) {
+		let inputs = DOM.newTodoForm.getFormInputs();
+		DOM.newTodoElementsToggle();
+		DOM.newTodoForm.resetForm();
+		let todo = App.createTodo(inputs);
 		DOM.displayTodos(App.todoList["all"]);
 	}
 });

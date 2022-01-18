@@ -219,7 +219,8 @@ aside h2 {
 	margin-bottom: 0.5em;
 }
 
-aside li {
+aside li,
+.tag {
 	display: inline-block;
 	padding: 0.35em 0.4em 0.2em;
 	margin-right: 0.4em;
@@ -241,21 +242,27 @@ aside #filterAll > * {
 	pointer-events: none;
 }
 
-aside li.active {
+/* List item & tag element */
+aside li.active,
+#form-tags input:checked + .tag {
 	color: var(--china-rose);
 	border: 2px solid var(--china-rose);
 	background-color: var(--oxford-blue);
 }
 
-aside li i::before {
+/* Start: List item icon & tag element icon */
+aside li i,
+.tag i {
 	font-size: 0.9em;
 	color: var(--dark-gray);
 	margin-right: 5px;
 }
 
-aside li.active i::before {
+aside li.active i,
+#form-tags input:checked + .tag i {
 	color: var(--light-gray);
 }
+/* End: List item icon & tag element icon */
 
 /* -Language Switch */
 
@@ -620,6 +627,39 @@ input[id="form-dueDate"] {
 #form-priority input {
 	display: none;
 	appearance: none;
+}
+
+/* Tags */
+#form-tags {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+
+	max-height: var(--min-height);
+	overflow: hidden;
+	transition: max-height 300ms cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+#form-tags.visible {
+	max-height: var(--max-height);
+}
+
+#form-tags input {
+	display: none;
+	appearance: none;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+}
+
+#form-tags label {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#form-tags.visible + label > .add-optional-input {
+	transform: rotateZ(135deg);
+	/* transform: rotateZ(225deg); */
 }
 
 /* Add Todo (Submit Button) */

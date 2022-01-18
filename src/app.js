@@ -7,9 +7,9 @@ const App = {
 	init: function () {
 		this.initTodoList();
 	},
-	createTodo: function (tags, ...args) {
+	createTodo: function (obj) {
 		// Create Todo instance
-		let todo = new Todo(...args);
+		let todo = new Todo(obj);
 
 		// Create an index for the todo instance, so it can be referenced from tags by its index position in "all" array
 		// Index is created BEFORE adding it to the array because index references start from zero
@@ -20,15 +20,12 @@ const App = {
 		this.todoList["all"].push(todo);
 
 		// If a tag is provided:
-		if (tags) {
-			tags.forEach((tag) => {
+		if (obj.tags.length) {
+			obj.tags.forEach((tag) => {
 				// If it does not exist, create an empty array
 				if (this.todoList[tag] == null) {
 					this.todoList[tag] = [];
 				}
-
-				// Add tag to instance's tags array
-				todo.tags.push(tag);
 
 				// Push its index to App's tag array
 				this.todoList[tag].push(todo.index);

@@ -12,5 +12,6 @@
 	"priority": "Priority",
 	"notes": "Notes",
 	"checklist": "Checklist",
+	"tags": "Tags",
 	"btn-add-todo": "Add"
 }
