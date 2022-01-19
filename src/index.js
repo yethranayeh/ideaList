@@ -18,7 +18,10 @@ const E = {
 	searchChanged: "searchChanged",
 	filterClicked: "filterClicked",
 	translationDone: "translationDone",
-	formSubmitted: "formSubmitted"
+	formSubmitted: "formSubmitted",
+	newTagSubmitted: "newTagSubmitted",
+	newTagValid: "newTagValid",
+	newTagInvalid: "newTagInvalid"
 };
 
 // Initialize
@@ -217,6 +220,33 @@ DOM.newTodoForm.btnShowTags.addEventListener("click", () => {
 	container.classList.toggle("visible");
 });
 
+// -New tag input & button
+DOM.newTodoForm.newTag.input.addEventListener("keydown", (event) => {
+	DOM.newTodoForm.newTag.limitInput(event.target);
+	if (event.key === "Enter") {
+		event.preventDefault();
+		PubSub.publish(E.newTagSubmitted, event.target.value);
+	} else if (event.key === "Backspace") {
+		// If new tag has input value, send signal so button can be changed from chevron to plus
+		if (event.target.value.length <= 1) {
+			PubSub.publish(E.newTagInvalid);
+		}
+	} else if (event.target.value) {
+		// This if condition also unintentionally prevents 1 character tags, so they can be 2ch minimum
+		PubSub.publish(E.newTagValid);
+	}
+});
+
+DOM.newTodoForm.newTag.input.addEventListener("keyup", (event) => {
+	DOM.newTodoForm.newTag.limitInput(event.target);
+});
+
+DOM.newTodoForm.newTag.btn.addEventListener("click", (event) => {
+	if (event.target.classList.contains("valid")) {
+		PubSub.publish(E.newTagSubmitted, DOM.newTodoForm.newTag.input.value);
+	}
+});
+
 // -Submit new Todo form
 DOM.newTodoForm.btnAdd.addEventListener("click", (e) => {
 	PubSub.publish(E.formSubmitted);
@@ -303,4 +333,24 @@ PubSub.subscribe(E.formSubmitted, () => {
 		let todo = App.createTodo(inputs);
 		DOM.displayTodos(App.todoList["all"]);
 	}
+});
+
+PubSub.subscribe(E.newTagValid, () => {
+	let btn = DOM.newTodoForm.newTag.btn;
+	btn.classList.remove("fa-chevron-down");
+	btn.classList.add("fa-plus");
+	btn.classList.add("valid");
+});
+
+PubSub.subscribe(E.newTagInvalid, () => {
+	let btn = DOM.newTodoForm.newTag.btn;
+	btn.classList.remove("fa-plus");
+	btn.classList.remove("valid");
+	btn.classList.add("fa-chevron-down");
+});
+
+PubSub.subscribe(E.newTagSubmitted, (topic, data) => {
+	console.info("Submitted");
+	console.log(data);
+	DOM.newTodoForm.newTag.addCreatedTag();
 });

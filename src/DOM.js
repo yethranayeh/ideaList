@@ -44,7 +44,7 @@ const DOM = {
 		this.newTodoForm.self.style.cssText = `--max-height: ${formMaxHeight}px; --min-height: 0px`;
 		this.newTodoForm.populateFormTags(Object.keys(todoList));
 		let tagContainer = this.newTodoForm.self.querySelector("#form-tags");
-		let tagContainerMaxHeight = tagContainer.offsetHeight + 16 * 4;
+		let tagContainerMaxHeight = tagContainer.offsetHeight + 16 * 10;
 		tagContainer.style.cssText = `--max-height: ${tagContainerMaxHeight}px; --min-height: 0px`;
 
 		// -Create Todo Button
@@ -360,7 +360,7 @@ const DOM = {
 		btnAdd.appendChild(btnAddIcon);
 
 		let btnAddText = document.createElement("span");
-		btnAddText.setAttribute("data-key", "btn-add-todo");
+		btnAddText.setAttribute("data-key", "btn-add");
 		btnAdd.appendChild(btnAddText);
 
 		btnAddContaier.appendChild(btnAdd);
@@ -379,8 +379,73 @@ const DOM = {
 			return valid;
 		}
 
+		// New Tag Creation
+		const newTag = (function () {
+			// New Tag
+			let id = "new-tag";
+			let container = document.createElement("div");
+			container.id = "new-tag-container";
+
+			let input = document.createElement("input");
+			input.id = id;
+
+			let label = document.createElement("label");
+			label.setAttribute("for", id);
+
+			let text = document.createElement("span");
+			text.setAttribute("data-key", "btn-add");
+			label.appendChild(text);
+
+			let icon = document.createElement("i");
+			icon.classList.add("fas", "fa-chevron-down");
+			icon.classList.add("btn-new-tag");
+			label.appendChild(icon);
+
+			container.appendChild(input);
+			container.appendChild(label);
+
+			// Created Tag
+			function addCreatedTag() {
+				let id = `tag-${newTag.input.value}`;
+				let input = document.createElement("input");
+				input.id = id;
+				input.type = "checkbox";
+				input.setAttribute("autocomplete", "off");
+				input.checked = true;
+
+				let label = document.createElement("label");
+				label.classList.add("tag");
+				label.setAttribute("for", id);
+
+				let icon = document.createElement("i");
+				icon.classList.add("fas", "fa-hashtag");
+				label.appendChild(icon);
+
+				let text = document.createElement("span");
+				text.textContent = newTag.input.value;
+				label.appendChild(text);
+
+				let tagsContainer = form.querySelector("#form-tags");
+				tagsContainer.insertBefore(input, newTag.container);
+				tagsContainer.insertBefore(label, newTag.container);
+
+				// return { input: input, label: label };
+			}
+
+			function limitInput(element) {
+				var max_chars = 10;
+
+				if (element.value.length > max_chars) {
+					element.value = element.value.substr(0, max_chars);
+				}
+			}
+
+			return { container: container, input: input, btn: icon, limitInput: limitInput, addCreatedTag: addCreatedTag };
+		})();
+
 		// Once tags are received from storage, populate #form-tags with the available tags.
 		function populateFormTags(tags) {
+			let container = form.querySelector("#form-tags");
 			tags.forEach((tag) => {
 				if (tag != "all") {
 					let id = `tag-${tag}`;
@@ -390,7 +455,7 @@ const DOM = {
 					input.setAttribute("autocomplete", "off");
 
 					let label = document.createElement("label");
-					label.classList.add("tag");
+					label.classList.add("tag", "form-tag");
 					label.setAttribute("for", id);
 					let lblIcon = document.createElement("i");
 					lblIcon.classList.add("fas", "fa-hashtag");
@@ -400,11 +465,13 @@ const DOM = {
 					lblText.textContent = tag;
 					label.appendChild(lblText);
 
-					let container = form.querySelector("#form-tags");
 					container.appendChild(input);
 					container.appendChild(label);
 				}
 			});
+
+			container.appendChild(newTag.container);
+			// container.appendChild(newTag.label);
 		}
 
 		// Returns an Object that contains form inputs
@@ -473,6 +540,7 @@ const DOM = {
 			isValid: isValid,
 			populateFormTags: populateFormTags,
 			btnShowTags: btnShowTags,
+			newTag: newTag,
 			getFormInputs: getFormInputs,
 			resetForm: resetForm,
 			fp: fp

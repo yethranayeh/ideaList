@@ -2,7 +2,6 @@
 	"tags-header": "Tags:",
 	"tag-all": "All",
 	"date-header": "Date:",
-	"date-options": ["Today", "This Week", "This Month"],
 	"date-filter-day": "Today",
 	"date-filter-week": "This Week",
 	"date-filter-month": "This Month",
@@ -13,5 +12,5 @@
 	"notes": "Notes",
 	"checklist": "Checklist",
 	"tags": "Tags",
-	"btn-add-todo": "Add"
+	"btn-add": "Add"
 }

@@ -662,6 +662,38 @@ input[id="form-dueDate"] {
 	/* transform: rotateZ(225deg); */
 }
 
+/* Add new tag  */
+/* New tag btn */
+.btn-new-tag {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 0.2em;
+	margin-left: 0.4em;
+	cursor: pointer;
+
+	color: var(--china-rose);
+	transition: transform 250ms ease-out;
+}
+
+.btn-new-tag.valid {
+	transform: rotate(360deg);
+}
+
+/* Input */
+#new-tag-container {
+	display: flex;
+	flex-direction: column-reverse;
+	justify-content: center;
+	align-items: center;
+	margin: 0.2em 0;
+	border: none;
+}
+
+#new-tag {
+	display: block !important;
+}
+
 /* Add Todo (Submit Button) */
 .btn-add-todo {
 	padding: 0.2em 1em;
