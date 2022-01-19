@@ -227,11 +227,10 @@ DOM.newTodoForm.newTag.input.addEventListener("keydown", (event) => {
 		event.preventDefault();
 		PubSub.publish(E.newTagSubmitted, event.target.value);
 	} else if (event.key === "Backspace") {
-		// If new tag has input value, send signal so button can be changed from chevron to plus
 		if (event.target.value.length <= 1) {
 			PubSub.publish(E.newTagInvalid);
 		}
-	} else if (event.target.value) {
+	} else if (event.target.value && /^\S/i.test(event.target.value)) {
 		// This if condition also unintentionally prevents 1 character tags, so they can be 2ch minimum
 		PubSub.publish(E.newTagValid);
 	}
@@ -239,11 +238,18 @@ DOM.newTodoForm.newTag.input.addEventListener("keydown", (event) => {
 
 DOM.newTodoForm.newTag.input.addEventListener("keyup", (event) => {
 	DOM.newTodoForm.newTag.limitInput(event.target);
+	if (event.key === "Backspace") {
+		// If new tag has input value, send signal so button can be changed from chevron to plus
+		if (event.target.value.length <= 1) {
+			PubSub.publish(E.newTagInvalid);
+		}
+	}
 });
 
 DOM.newTodoForm.newTag.btn.addEventListener("click", (event) => {
-	if (event.target.classList.contains("valid")) {
-		PubSub.publish(E.newTagSubmitted, DOM.newTodoForm.newTag.input.value);
+	let input = DOM.newTodoForm.newTag.input;
+	if (event.target.classList.contains("valid") && /^\S/i.test(input.value)) {
+		PubSub.publish(E.newTagSubmitted, input.value);
 	}
 });
 
