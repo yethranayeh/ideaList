@@ -320,7 +320,7 @@ PubSub.subscribe(E.filterClicked, () => {
 	} else {
 		DOM.displayTodos(App.todoList["all"]);
 		// Since it will display all, App should not store any active filtered indexes
-		App.filtered = [];
+		App.filtered = undefined;
 	}
 });
 
@@ -350,7 +350,5 @@ PubSub.subscribe(E.newTagInvalid, () => {
 });
 
 PubSub.subscribe(E.newTagSubmitted, (topic, data) => {
-	console.info("Submitted");
-	console.log(data);
 	DOM.newTodoForm.newTag.addCreatedTag();
 });
