@@ -43,9 +43,6 @@ const DOM = {
 		let formMaxHeight = this.newTodoForm.self.offsetHeight + 16 * 10;
 		this.newTodoForm.self.style.cssText = `--max-height: ${formMaxHeight}px; --min-height: 0px`;
 		this.newTodoForm.populateFormTags(Object.keys(todoList));
-		let tagContainer = this.newTodoForm.self.querySelector("#form-tags");
-		let tagContainerMaxHeight = tagContainer.offsetHeight + 16 * 10;
-		tagContainer.style.cssText = `--max-height: ${tagContainerMaxHeight}px; --min-height: 0px`;
 
 		// -Create Todo Button
 		this.mainArea.appendChild(this.newTodoBtn);
