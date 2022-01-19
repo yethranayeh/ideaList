@@ -40,7 +40,7 @@ const DOM = {
 		// Main Content
 		// - Create Todo Form
 		this.mainArea.appendChild(this.newTodoForm.self);
-		let formMaxHeight = this.newTodoForm.self.offsetHeight + 16 * 6;
+		let formMaxHeight = this.newTodoForm.self.offsetHeight + 16 * 10;
 		this.newTodoForm.self.style.cssText = `--max-height: ${formMaxHeight}px; --min-height: 0px`;
 		this.newTodoForm.populateFormTags(Object.keys(todoList));
 		let tagContainer = this.newTodoForm.self.querySelector("#form-tags");
