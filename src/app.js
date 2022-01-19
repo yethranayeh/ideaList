@@ -89,7 +89,7 @@ const App = {
 		let filtered = [];
 
 		// if tags are provided:
-		if (obj.tags && obj.tags.length) {
+		if (obj.tags) {
 			/**
 			 * @property {String} tag Tag name provided to the filter.
 			 */
@@ -138,6 +138,34 @@ const App = {
 		if (obj.completed != undefined) {
 		}
 
+		App.filtered = filtered;
 		return filtered;
+	},
+	/**
+	 *
+	 * @param {RegExp} pattern A regular expression pattern to search for Todo titles.
+	 */
+	getSearchResults(pattern) {
+		let filtered = App.filtered;
+
+		let matching = [];
+		// If there already filtered todos, go through them
+		if (filtered) {
+			for (let index of filtered) {
+				let todo = App.todoList.all[index];
+				if (pattern.test(todo.title)) {
+					matching.push(index);
+				}
+			}
+		} else {
+			// If filtered array is empty, go through all todos
+			for (let todo of App.todoList.all) {
+				if (pattern.test(todo.title)) {
+					matching.push(todo.index);
+				}
+			}
+		}
+
+		return matching;
 	}
 };

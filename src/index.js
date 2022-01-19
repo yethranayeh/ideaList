@@ -265,7 +265,7 @@ PubSub.subscribe(E.searchFocusOut, () => {
 
 PubSub.subscribe(E.searchChanged, (event, input) => {
 	let re = new RegExp(`^${input}`, "i");
-	console.log("RegExp:", re);
+	DOM.displayTodos(App.todoList.all, App.getSearchResults(re));
 });
 
 // Filters
@@ -280,10 +280,17 @@ PubSub.subscribe(E.filterClicked, () => {
 		}
 	});
 
+	let filter = {};
 	if (tags.length) {
-		DOM.displayTodos(App.todoList.all, App.getFilteredTodos({ tags: tags }));
+		filter.tags = tags;
+	}
+
+	if (filter.tags) {
+		DOM.displayTodos(App.todoList.all, App.getFilteredTodos(filter));
 	} else {
 		DOM.displayTodos(App.todoList["all"]);
+		// Since it will display all, App should not store any active filtered indexes
+		App.filtered = [];
 	}
 });
 
