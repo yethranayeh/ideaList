@@ -59,14 +59,6 @@ async function fetchTranslationsFor(newLocale) {
 		return enLocale;
 	} else if (newLocale === "tr") {
 		return trLocale;
-	} else {
-		console.error("There was a problem while fetching translations for the local language.");
-		console.log(
-			"%cPlease contact %cgithub.com/yethranayeh",
-			"font-size: 2em; color: #eee;",
-			"font-size: 2em; color: blue; text-decoration: underline; font-weight: bold; cursor: pointer;"
-		);
-		return;
 	}
 }
 
@@ -225,30 +217,37 @@ DOM.newTodoForm.newTag.input.addEventListener("keydown", (event) => {
 	DOM.newTodoForm.newTag.limitInput(event.target);
 	if (event.key === "Enter") {
 		event.preventDefault();
-		PubSub.publish(E.newTagSubmitted, event.target.value);
-	} else if (event.key === "Backspace") {
-		if (event.target.value.length <= 1) {
-			PubSub.publish(E.newTagInvalid);
-		}
-	} else if (event.target.value && /^\S/i.test(event.target.value)) {
-		// This if condition also unintentionally prevents 1 character tags, so they can be 2ch minimum
-		PubSub.publish(E.newTagValid);
 	}
 });
 
 DOM.newTodoForm.newTag.input.addEventListener("keyup", (event) => {
 	DOM.newTodoForm.newTag.limitInput(event.target);
+	// input must be >= 2 characters, no whitespace at beginning, cannot start with all
+	let passesTest = DOM.newTodoForm.newTag.passesTest();
 	if (event.key === "Backspace") {
 		// If new tag has input value, send signal so button can be changed from chevron to plus
-		if (event.target.value.length <= 1) {
+		if (passesTest) {
+			PubSub.publish(E.newTagValid);
+		} else {
 			PubSub.publish(E.newTagInvalid);
 		}
+	} else if (event.key === "Enter") {
+		event.preventDefault();
+
+		if (passesTest) {
+			PubSub.publish(E.newTagSubmitted, event.target.value);
+		}
+	} else if (passesTest) {
+		PubSub.publish(E.newTagValid);
+	} else if (!passesTest) {
+		PubSub.publish(E.newTagInvalid);
 	}
 });
 
 DOM.newTodoForm.newTag.btn.addEventListener("click", (event) => {
 	let input = DOM.newTodoForm.newTag.input;
-	if (event.target.classList.contains("valid") && /^\S/i.test(input.value)) {
+	let passesTest = DOM.newTodoForm.newTag.passesTest();
+	if (event.target.classList.contains("valid") && passesTest) {
 		PubSub.publish(E.newTagSubmitted, input.value);
 	}
 });
@@ -357,4 +356,5 @@ PubSub.subscribe(E.newTagInvalid, () => {
 
 PubSub.subscribe(E.newTagSubmitted, (topic, data) => {
 	DOM.newTodoForm.newTag.addCreatedTag();
+	DOM.newTodoForm.newTag.input.value = "";
 });

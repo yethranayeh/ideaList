@@ -437,7 +437,22 @@ const DOM = {
 				}
 			}
 
-			return { container: container, input: input, btn: icon, limitInput: limitInput, addCreatedTag: addCreatedTag };
+			function passesTest() {
+				let value = newTag.input.value;
+				let enoughChars = value.length >= 2;
+				let noSpaceOnStart = /^\S/i.test(value);
+				let notAll = !/^all$/i.test(value) && !/^hepsi$/i.test(value);
+				return enoughChars && noSpaceOnStart && notAll;
+			}
+
+			return {
+				container: container,
+				input: input,
+				btn: icon,
+				limitInput: limitInput,
+				addCreatedTag: addCreatedTag,
+				passesTest: passesTest
+			};
 		})();
 
 		// Once tags are received from storage, populate #form-tags with the available tags.
