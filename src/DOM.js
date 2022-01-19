@@ -462,7 +462,7 @@ const DOM = {
 				}
 			});
 
-			form.querySelector(".visible").classList.remove("visible");
+			form.querySelector("#form-tags").classList.remove("visible");
 		}
 
 		return {

@@ -67,7 +67,7 @@ const App = {
 	 * @param {dateFns} date The date filter [optional filter]
 	 * @param {Boolean} completed Filter completed/uncompleted todos [optional filter]
 	 */
-	getFilteredTodos: function (tags, date, completed) {
+	getFilteredTodos: function (obj) {
 		function arraysEqual(arr1, arr2) {
 			let arr1Sorted = arr1;
 			arr1Sorted.sort();
@@ -89,22 +89,38 @@ const App = {
 		let filtered = [];
 
 		// if tags are provided:
-		if (tags.length) {
+		if (obj.tags && obj.tags.length) {
 			/**
 			 * @property {String} tag Tag name provided to the filter.
 			 */
-			for (let tag of tags) {
-				// Each tag has an array of indexes to help locate the actual object
+			for (let tag of obj.tags) {
 				/**
 				 * @property {Number} index Index number of the object that contains the provided tag
 				 * @property {Object} todo The Todo instance that corresponds to the index location in the array that contains "all" Todos.
 				 */
 				for (let index of this.todoList[tag]) {
 					let todo = this.todoList["all"][index];
-					if (arraysEqual(todo.tags, tags)) {
-						// If its index is not already in filtered array, add it
-						if (!filtered.includes(todo.index)) {
-							filtered.push(todo.index);
+					//
+					if (todo.tags.length < obj.tags.length) {
+						continue;
+					}
+
+					// If the todo has more tags than the filter,
+					if (obj.tags.length < todo.tags.length) {
+						// check if the filter is a subset of todo tags
+						if (obj.tags.every((val) => todo.tags.includes(val))) {
+							// If its index is not already in filtered array, add it
+							if (!filtered.includes(todo.index)) {
+								filtered.push(todo.index);
+							}
+						}
+					} else if (obj.tags.length === todo.tags.length) {
+						// If the filter amount is the same as todo instance's tag amount, they must match to be displayed.
+						if (arraysEqual(todo.tags, obj.tags)) {
+							// If its index is not already in filtered array, add it
+							if (!filtered.includes(todo.index)) {
+								filtered.push(todo.index);
+							}
 						}
 					}
 				}
@@ -114,12 +130,12 @@ const App = {
 		// Apply the same logic to other filters
 
 		// if date is provided:
-		if (date.length) {
+		if (obj.date && obj.date.length) {
 		}
 
 		// if completion filter is provided
 		// compare with undefined since "completed" will be a boolean
-		if (completed != undefined) {
+		if (obj.completed != undefined) {
 		}
 
 		return filtered;

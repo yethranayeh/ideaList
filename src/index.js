@@ -15,6 +15,7 @@ const E = {
 	hamClicked: "hamClicked",
 	searchFocused: "searchFocused",
 	searchFocusOut: "searchFocusOut",
+	searchChanged: "searchChanged",
 	filterClicked: "filterClicked",
 	translationDone: "translationDone",
 	formSubmitted: "formSubmitted"
@@ -134,6 +135,11 @@ DOM.navbar.search.box.addEventListener("focusout", () => {
 	let input = searchbox.querySelector("input");
 	input.value = "";
 	PubSub.publish(E.searchFocusOut);
+});
+
+// --change listener
+DOM.navbar.search.input.addEventListener("input", (e) => {
+	PubSub.publish(E.searchChanged, e.target.value);
 });
 
 // SIDEBAR
@@ -257,6 +263,11 @@ PubSub.subscribe(E.searchFocusOut, () => {
 	DOM.navbar.date.classList.remove("fade-out");
 });
 
+PubSub.subscribe(E.searchChanged, (event, input) => {
+	let re = new RegExp(`^${input}`, "i");
+	console.log("RegExp:", re);
+});
+
 // Filters
 PubSub.subscribe(E.filterClicked, () => {
 	let actives = [...DOM.body.querySelectorAll(".tag.active")];
@@ -270,7 +281,7 @@ PubSub.subscribe(E.filterClicked, () => {
 	});
 
 	if (tags.length) {
-		DOM.displayTodos(App.todoList.all, App.getFilteredTodos(tags, [], []));
+		DOM.displayTodos(App.todoList.all, App.getFilteredTodos({ tags: tags }));
 	} else {
 		DOM.displayTodos(App.todoList["all"]);
 	}
