@@ -1,6 +1,9 @@
 /** @format */
 
 import Todo from "./todo.js";
+import isSameDay from "date-fns/isSameDay";
+import isSameISOWeek from "date-fns/isSameISOWeek";
+import isSameMonth from "date-fns/isSameMonth";
 export { App as default };
 
 const App = {
@@ -128,9 +131,34 @@ const App = {
 		}
 
 		// Apply the same logic to other filters
-
 		// if date is provided:
-		if (obj.date && obj.date.length) {
+		if (obj.date) {
+			let date = new Date();
+			let key = "date-filter-";
+			let filteredDates = [];
+			for (let todo of App.todoList.all) {
+				let dueDate = new Date(todo.dueDate);
+				if (obj.date === key + "day") {
+					if (isSameDay(date, dueDate)) {
+						filteredDates.push(todo.index);
+					}
+				} else if (obj.date === key + "week") {
+					if (isSameISOWeek(date, dueDate)) {
+						filteredDates.push(todo.index);
+					}
+				} else if (obj.date === key + "month") {
+					if (isSameMonth(date, dueDate)) {
+						filteredDates.push(todo.index);
+					}
+				}
+			}
+			if (filtered.length) {
+				filtered = filteredDates.filter((value) => {
+					return filtered.includes(value);
+				});
+			} else {
+				filtered = filteredDates;
+			}
 		}
 
 		// if completion filter is provided
@@ -138,6 +166,7 @@ const App = {
 		if (obj.completed != undefined) {
 		}
 
+		// filtered = filtered.length ? filtered : undefined;
 		App.filtered = filtered;
 		return filtered;
 	},

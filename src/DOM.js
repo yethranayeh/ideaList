@@ -179,6 +179,7 @@ const DOM = {
 		const dates = [];
 		for (let i = 0; i < 3; i++) {
 			let li = document.createElement("li");
+			li.classList.add("date");
 
 			let liIcon = document.createElement("i");
 			liIcon.classList.add("fas", `fa-calendar${dateIconClasses[i]}`);

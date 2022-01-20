@@ -177,6 +177,7 @@ for (let each of DOM.sidebar.dates) {
 
 		// Toggle "active" class of clicked element
 		each.classList.toggle("active");
+		PubSub.publish(E.filterClicked, "date");
 	});
 }
 
@@ -304,27 +305,43 @@ PubSub.subscribe(E.searchChanged, (event, input) => {
 });
 
 // Filters
-PubSub.subscribe(E.filterClicked, () => {
-	let actives = [...DOM.body.querySelectorAll(".tag.active")];
-	let tags = [];
-	actives.forEach((active) => {
-		if (active.id === "filterAll") {
-			return;
-		} else {
-			tags.push(active.textContent);
-		}
+PubSub.subscribe(E.filterClicked, (sender, data) => {
+	let actives = [...DOM.sidebar.self.querySelectorAll(".active")];
+	let activeTags = actives.filter((value) => {
+		return value.classList.contains("tag");
+	});
+	let activeDate = actives.filter((value) => {
+		return value.classList.contains("date");
 	});
 
 	let filter = {};
+	let tags = [];
+
+	if (data === "date" && activeTags.length === 1 && activeTags[0].id === "filterAll") {
+		App.filtered = undefined;
+	}
+
+	activeTags.forEach((tag) => {
+		if (tag.id === "filterAll") {
+			return;
+		} else {
+			tags.push(tag.textContent);
+		}
+	});
+
+	if (activeDate.length) {
+		filter.date = activeDate[0].querySelector("span").getAttribute("data-key");
+	}
 	if (tags.length) {
 		filter.tags = tags;
 	}
 
-	if (filter.tags) {
+	// If filter has any keys, get the filtered result
+	if (Object.keys(filter).length) {
 		DOM.displayTodos(App.todoList.all, App.getFilteredTodos(filter));
 	} else {
+		// Else, show all todos
 		DOM.displayTodos(App.todoList["all"]);
-		// Since it will display all, App should not store any active filtered indexes
 		App.filtered = undefined;
 	}
 });
