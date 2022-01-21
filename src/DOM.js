@@ -42,7 +42,7 @@ const DOM = {
 		this.mainArea.appendChild(this.newTodoForm.self);
 		let formMaxHeight = this.newTodoForm.self.offsetHeight + 16 * 10;
 		this.newTodoForm.self.style.cssText = `--max-height: ${formMaxHeight}px; --min-height: 0px`;
-		this.newTodoForm.populateFormTags(Object.keys(todoList));
+		this.newTodoForm.populateFormTags(todoList);
 
 		// -Create Todo Button
 		this.mainArea.appendChild(this.newTodoBtn);
@@ -121,7 +121,7 @@ const DOM = {
 		const aside = document.createElement("aside");
 
 		// Start with active class for faster debug
-		// aside.classList.add("active");
+		aside.classList.add("active");
 
 		// Wrap each part in a section tag before adding to sidebar
 		function addToSection(...elements) {
@@ -140,30 +140,35 @@ const DOM = {
 		// Start: Tag Filters
 		const tagsHeader = document.createElement("h2");
 		tagsHeader.setAttribute("data-key", "tags-header");
-		// tagsHeader.textContent = "Tags:";
-		aside.appendChild(tagsHeader);
 
 		const tagList = document.createElement("ul");
 		const tags = [];
-		for (let key in todoList) {
-			let li = document.createElement("li");
-			li.classList.add("tag");
-			let icon = document.createElement("i");
-			icon.classList.add("fas", "fa-hashtag");
-			li.appendChild(icon);
+		function populateFilterTags(todoList) {
+			tagList.innerHTML = "";
+			for (let key in todoList) {
+				let li = document.createElement("li");
+				li.classList.add("tag");
+				let icon = document.createElement("i");
+				icon.classList.add("fas", "fa-hashtag");
+				li.appendChild(icon);
 
-			if (key === "all") {
-				let text = document.createElement("span");
-				li.id = "filterAll";
-				li.classList.add("active");
-				text.setAttribute("data-key", "tag-all");
-				li.appendChild(text);
-			} else {
-				li.innerHTML += key;
+				if (key === "all") {
+					li.id = "filterAll";
+					li.classList.add("active");
+
+					let text = document.createElement("span");
+					text.setAttribute("data-key", "tag-all");
+					text.textContent = getLocale() === "en" ? "All" : "Hepsi";
+
+					li.appendChild(text);
+				} else {
+					li.innerHTML += key;
+				}
+				tagList.appendChild(li);
+				tags.push(li);
 			}
-			tagList.appendChild(li);
-			tags.push(li);
 		}
+		populateFilterTags(todoList);
 		let tagContent = addToSection(tagsHeader, tagList);
 		filters.appendChild(tagContent);
 		// End: Tag Filters
@@ -171,7 +176,6 @@ const DOM = {
 		// Start: Date Filters
 		const dateHeader = document.createElement("h2");
 		dateHeader.setAttribute("data-key", "date-header");
-		aside.appendChild(dateHeader);
 
 		const dateIconClasses = ["-day", "-week", ""];
 		const dateDataKeys = ["day", "week", "month"];
@@ -228,7 +232,15 @@ const DOM = {
 
 		aside.appendChild(addToSection(localeSect));
 
-		return { self: aside, tagList: tagList, tags: tags, dateList: dateList, dates: dates, langInputs: inputs };
+		return {
+			self: aside,
+			tagList: tagList,
+			tags: tags,
+			dateList: dateList,
+			dates: dates,
+			langInputs: inputs,
+			populateFilterTags: populateFilterTags
+		};
 	},
 	main: (function () {
 		let main = document.createElement("main");
@@ -457,7 +469,8 @@ const DOM = {
 		})();
 
 		// Once tags are received from storage, populate #form-tags with the available tags.
-		function populateFormTags(tags) {
+		function populateFormTags(obj) {
+			let tags = Object.keys(obj);
 			let container = form.querySelector("#form-tags");
 			tags.forEach((tag) => {
 				if (tag != "all") {

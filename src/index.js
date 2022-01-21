@@ -139,32 +139,35 @@ DOM.navbar.search.input.addEventListener("input", (e) => {
 
 // SIDEBAR
 // -All list items (tags and dates)
-for (let each of DOM.sidebar.tags) {
-	each.addEventListener("click", (event) => {
-		let All = DOM.sidebar.self.querySelector("#filterAll");
-		// If "All" filter is clicked
-		if (event.target.id === All.id) {
-			DOM.sidebar.tags.forEach((tag) => {
-				// Remove active from every filter except "All"
-				if (!(tag.id === All.id)) {
-					tag.classList.remove("active");
-				} else {
-					tag.classList.add("active");
+DOM.sidebar.addEventListenerTags = function () {
+	for (let each of DOM.sidebar.tags) {
+		each.addEventListener("click", (event) => {
+			let All = DOM.sidebar.self.querySelector("#filterAll");
+			// If "All" filter is clicked
+			if (event.target.id === All.id) {
+				DOM.sidebar.tags.forEach((tag) => {
+					// Remove active from every filter except "All"
+					if (!(tag.id === All.id)) {
+						tag.classList.remove("active");
+					} else {
+						tag.classList.add("active");
+					}
+				});
+			} else {
+				// If any filter other than "All" is clicked
+
+				// If "All" is active, remove it because any other filter will contain less than all todo elements
+				if (All.classList.contains("active")) {
+					All.classList.remove("active");
 				}
-			});
-		} else {
-			// If any filter other than "All" is clicked
-
-			// If "All" is active, remove it because any other filter will contain less than all todo elements
-			if (All.classList.contains("active")) {
-				All.classList.remove("active");
+				each.classList.toggle("active");
 			}
-			each.classList.toggle("active");
-		}
 
-		PubSub.publish(E.filterClicked);
-	});
-}
+			PubSub.publish(E.filterClicked);
+		});
+	}
+};
+DOM.sidebar.addEventListenerTags();
 
 for (let each of DOM.sidebar.dates) {
 	each.addEventListener("click", () => {
@@ -354,6 +357,10 @@ PubSub.subscribe(E.formSubmitted, () => {
 		DOM.newTodoForm.resetForm();
 		let todo = App.createTodo(inputs);
 		DOM.displayTodos(App.todoList["all"]);
+		DOM.sidebar.populateFilterTags(App.todoList);
+		// Since sidebar filter tags are removed and added again, they lose event listeners.
+		DOM.sidebar.addEventListenerTags();
+		DOM.newTodoForm.populateFormTags(App.todoList);
 	}
 });
 

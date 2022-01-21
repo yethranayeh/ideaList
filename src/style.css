@@ -196,6 +196,7 @@ aside {
 	flex-direction: column;
 	justify-content: space-between;
 	padding: 1.5em;
+	max-width: 30rem;
 
 	background: linear-gradient(to bottom right, var(--space-cadet), var(--russian-violet)) no-repeat center fixed;
 	background-size: cover;
@@ -677,6 +678,9 @@ input[id="form-dueDate"] {
 
 /* Input */
 #new-tag-container {
+	/* the container should always take 100% of the space like a block, it should not be inline as it is not visually pleasing */
+	flex: 0 0 100%;
+
 	display: flex;
 	flex-direction: column-reverse;
 	justify-content: center;
