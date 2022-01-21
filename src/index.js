@@ -137,6 +137,12 @@ DOM.navbar.search.input.addEventListener("input", (e) => {
 	PubSub.publish(E.searchChanged, e.target.value);
 });
 
+DOM.navbar.search.input.addEventListener("keydown", (event) => {
+	if (event.key === "Enter") {
+		event.preventDefault();
+	}
+});
+
 // SIDEBAR
 // -All list items (tags and dates)
 DOM.sidebar.addEventListenerTags = function () {

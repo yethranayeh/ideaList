@@ -121,7 +121,7 @@ const DOM = {
 		const aside = document.createElement("aside");
 
 		// Start with active class for faster debug
-		aside.classList.add("active");
+		// aside.classList.add("active");
 
 		// Wrap each part in a section tag before adding to sidebar
 		function addToSection(...elements) {
@@ -255,6 +255,9 @@ const DOM = {
 	})(),
 	newTodoForm: (function () {
 		let container = document.createElement("div");
+
+		// Debug version
+		// container.classList.add("new-todo", "active");
 		container.classList.add("new-todo");
 
 		let btnClose = document.createElement("i");
