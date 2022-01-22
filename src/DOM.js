@@ -310,6 +310,8 @@ const DOM = {
 					}
 				});
 			} else if (element === "priority") {
+				const prioColors = { "-": "var(--dark-gray)", "!": "#3f73d5", "!!": "#e18701", "!!!": "#de4d4a" };
+
 				// Label changed to span
 				label = document.createElement("span");
 				label.textContent = element;
@@ -334,6 +336,7 @@ const DOM = {
 					let radioLabel = document.createElement("label");
 					radioLabel.textContent = prios[i];
 					radioLabel.setAttribute("for", radioID);
+					radioLabel.style.cssText = `--priority-color: ${prioColors[prios[i]]};`;
 
 					input.appendChild(radio);
 					input.appendChild(radioLabel);
@@ -475,6 +478,7 @@ const DOM = {
 		function populateFormTags(obj) {
 			let tags = Object.keys(obj);
 			let container = form.querySelector("#form-tags");
+			container.innerHTML = "";
 			tags.forEach((tag) => {
 				if (tag != "all") {
 					let id = `tag-${tag}`;
@@ -580,6 +584,7 @@ const DOM = {
 		this.newTodoForm.btnClose.classList.toggle("fade-out");
 		this.newTodoBtn.classList.toggle("fade-out");
 	},
+	todos: { list: [], detailsList: [] },
 	/**
 	 * @param {Array} todos An array of todos to display
 	 * @param {Array} filteredIndexes An array of filtered indexes of todos. If provided, only these will be shown [Optional]
@@ -637,30 +642,36 @@ const DOM = {
 				title.classList.add("todo-title");
 				title.textContent = todo.title;
 
-				// Todo Info (Description and Notes)
+				// Start: Todo Info (Description, Notes, Checklist, Tags)
 				let infoContainer = document.createElement("div");
 				infoContainer.classList.add("todo-info");
 
-				let desc = document.createElement("p");
-				desc.classList.add("todo-description");
-				desc.textContent = todo.description;
-				infoContainer.appendChild(desc);
+				if (todo.description) {
+					let desc = document.createElement("p");
+					desc.classList.add("todo-description");
+					desc.textContent = todo.description;
+					infoContainer.appendChild(desc);
+				}
 
-				if (todo.notes.length) {
+				if (todo.notes) {
 					let note = document.createElement("p");
 					note.classList.add("todo-note");
 					note.textContent = todo.notes;
 					infoContainer.appendChild(note);
 				}
 
-				// Todo subtext
+				// Start: Todo subtext
 				let subtext = document.createElement("div");
 				subtext.classList.add("todo-subtext");
 
+				// -Priority
+				const prioColors = { "-": "var(--dark-gray)", "!": "#3f73d5", "!!": "#e18701", "!!!": "#de4d4a" };
 				let priority = document.createElement("span");
 				priority.classList.add("todo-priority");
 				priority.textContent = todo.priority;
+				priority.style.cssText = `--priority-color: ${prioColors[todo.priority]};`;
 
+				// -Due Date
 				let due = document.createElement("span");
 				due.classList.add("todo-due-date");
 				// Due Date is stored as stringified Date object,
@@ -672,18 +683,49 @@ const DOM = {
 
 				// The actual time will be stored as data attributed in case user changes language, so it can be formatted again
 				due.setAttribute("data-dueDate", todo.dueDate);
+				// End: Todo Info
+
+				// Start: Details button
+				let btnDetails = document.createElement("div"); // Empty div
+				// If Todo contains any details, create button. Else, leave it as empty div.
+				if (todo.description || todo.notes || todo.checklist || (todo.tags && todo.tags.length)) {
+					btnDetails.classList.add("btn-details");
+
+					let detailsTxt = document.createElement("span");
+					detailsTxt.setAttribute("data-key", "details");
+					detailsTxt.textContent = getLocale() === "en" ? "Details" : "Detaylar";
+					btnDetails.appendChild(detailsTxt);
+
+					let detailsIcon = document.createElement("i");
+					detailsIcon.classList.add("fas", "fa-chevron-down");
+					btnDetails.appendChild(detailsIcon);
+					DOM.todos.detailsList.push(btnDetails);
+				}
+				// End: Details button
 
 				let todoTags = document.createElement("ul");
+				todoTags.classList.add("tags");
 				todo.tags.forEach((tag) => {
 					let li = document.createElement("li");
-					li.textContent = tag;
+					li.classList.add("tag");
+
+					let icon = document.createElement("i");
+					icon.classList.add("fas", "fa-hashtag");
+					li.appendChild(icon);
+
+					let text = document.createElement("span");
+					text.textContent = tag;
+					li.appendChild(text);
+
 					todoTags.appendChild(li);
 				});
+				infoContainer.appendChild(todoTags);
 
-				appendTo(subtext, [priority, due, todoTags]);
+				appendTo(subtext, [priority, btnDetails, due]);
 
 				appendTo(todoContent, [title, infoContainer, subtext]);
 				appendTo(container, [todoContent]);
+				this.todos.list.push(container);
 				this.main.self.appendChild(container);
 			}
 		} else if (filteredIndexes) {

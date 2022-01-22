@@ -21,7 +21,8 @@ const E = {
 	formSubmitted: "formSubmitted",
 	newTagSubmitted: "newTagSubmitted",
 	newTagValid: "newTagValid",
-	newTagInvalid: "newTagInvalid"
+	newTagInvalid: "newTagInvalid",
+	detailsClicked: "detailsClicked"
 };
 
 // Initialize
@@ -199,13 +200,6 @@ DOM.sidebar.langInputs.forEach((input) => {
 
 // Main Content
 
-// -Notes button (if todo element has notes)
-DOM.main.self.querySelectorAll(".todo-note").forEach((note) => {
-	note.addEventListener("click", (e) => {
-		e.target.classList.add("active");
-	});
-});
-
 // -Create new Todo
 DOM.newTodoBtn.addEventListener("click", (e) => {
 	DOM.newTodoElementsToggle();
@@ -272,6 +266,16 @@ DOM.newTodoForm.self.addEventListener("submit", (e) => {
 	e.preventDefault();
 });
 
+// -Todo details
+DOM.todos.addEventListenerDetails = function () {
+	DOM.todos.detailsList.forEach((btn) => {
+		btn.addEventListener("click", (event) => {
+			PubSub.publish(E.detailsClicked, event.target);
+		});
+	});
+};
+DOM.todos.addEventListenerDetails();
+
 // SUBSCRIBE EVENTS
 
 // Translation
@@ -311,6 +315,7 @@ PubSub.subscribe(E.searchFocusOut, () => {
 PubSub.subscribe(E.searchChanged, (event, input) => {
 	let re = new RegExp(`^${input}`, "i");
 	DOM.displayTodos(App.todoList.all, App.getSearchResults(re));
+	DOM.todos.addEventListenerDetails();
 });
 
 // Filters
@@ -353,6 +358,7 @@ PubSub.subscribe(E.filterClicked, (sender, data) => {
 		DOM.displayTodos(App.todoList["all"]);
 		App.filtered = undefined;
 	}
+	DOM.todos.addEventListenerDetails();
 });
 
 // New Todo Form
@@ -363,6 +369,7 @@ PubSub.subscribe(E.formSubmitted, () => {
 		DOM.newTodoForm.resetForm();
 		let todo = App.createTodo(inputs);
 		DOM.displayTodos(App.todoList["all"]);
+		DOM.todos.addEventListenerDetails();
 		DOM.sidebar.populateFilterTags(App.todoList);
 		// Since sidebar filter tags are removed and added again, they lose event listeners.
 		DOM.sidebar.addEventListenerTags();
@@ -387,4 +394,13 @@ PubSub.subscribe(E.newTagInvalid, () => {
 PubSub.subscribe(E.newTagSubmitted, (topic, data) => {
 	DOM.newTodoForm.newTag.addCreatedTag();
 	DOM.newTodoForm.newTag.input.value = "";
+});
+
+// Todos
+PubSub.subscribe(E.detailsClicked, (topic, data) => {
+	let icon = data.querySelector("i");
+	icon.classList.toggle("active");
+
+	let info = data.parentNode.parentNode.querySelector(".todo-info");
+	info.classList.toggle("visible");
 });

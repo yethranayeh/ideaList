@@ -12,6 +12,7 @@
 	--oxford-blue: #121e41;
 	--space-cadet: #1a183f;
 	--light-gray: #fefefe;
+	--medium-gray: #bdbdbd;
 	--dark-gray: #777777;
 	--border-radius: 0.6rem;
 	--font-default: "Josefin Sans", sans-serif;
@@ -338,14 +339,9 @@ main {
 .todo {
 	display: flex;
 	align-items: center;
+	margin-bottom: 1.5em;
 
-	padding: 0.5em;
-	margin-bottom: 1em;
-	border: 2px solid var(--violet-blue);
-	border-radius: var(--border-radius);
-
-	color: var(--light-gray);
-	background-color: var(--oxford-blue);
+	position: relative;
 }
 
 .todo-checkbox {
@@ -358,63 +354,108 @@ main {
 	gap: 0.5em;
 	flex: 1 1 auto;
 
-	border-left: 2px solid var(--violet-blue);
+	padding: 0.7em;
+
+	border: 2px solid var(--violet-blue);
+	border-radius: var(--border-radius);
+
+	color: var(--light-gray);
+	background-color: var(--oxford-blue);
+
+	/* border-left: 2px solid var(--violet-blue); */
 	padding-left: 0.5em;
 }
 
 .todo-title {
-	font-size: 1.3em;
+	font-size: 1.4em;
 }
 
 .todo-info {
+	display: none;
+}
+
+.todo-info.visible {
 	display: flex;
 	flex-direction: column;
 	gap: 0.2em;
 }
 
+.todo-description {
+	color: var(--medium-gray);
+}
+
 .todo-note {
-	font-size: 0;
-	transition: all 250ms ease-out;
-}
-
-.todo-note.active {
-	font-size: 1em;
-}
-
-.todo-note::before,
-.todo-note::after {
-	cursor: pointer;
-	color: var(--purpureus);
-	transition: all 250ms ease-out;
-}
-
-.todo-note::before {
-	content: "\f249  Notes";
-	font-family: var(--font-awesome);
-	font-size: 16px;
-	word-spacing: 0.2em;
-}
-
-.todo-note.active::before {
-	font-size: 0;
-}
-
-.todo-note::after {
-	content: "\f00d";
-	font-family: var(--font-awesome);
-	display: inline;
-	font-size: 0;
-	margin-left: 0.5em;
-	text-align: center;
-}
-
-.todo-note.active::after {
-	font-size: 1.5em;
+	color: var(--dark-gray);
+	font-size: 0.9em;
+	font-style: italic;
 }
 
 .todo-subtext {
 	display: flex;
 	justify-content: space-between;
+	flex-wrap: wrap;
+}
+
+.todo .tags {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.todo .tag {
+	display: inline-flex;
+	justify-content: center;
+	font-size: 1em;
+	cursor: default;
+	border-color: var(--china-rose);
+	color: var(--china-rose);
+}
+
+.todo .tag i {
+	color: var(--light-gray);
+}
+
+.todo-priority {
+	font-weight: bold;
+	padding: 0.2em 1em 0;
+	color: var(--priority-color);
+	border-radius: var(--border-radius);
+	border: 2px solid var(--priority-color);
+}
+
+.todo-due-date {
+	display: inline-flex;
+	align-items: center;
+	/* flex: 0 1 100%; */
+}
+
+.btn-details {
+	/* position: absolute;
+	bottom: -0.7em;
+	left: 45%; */
+
+	display: inline-flex;
+	gap: 0.2em;
+	justify-content: center;
+	align-items: center;
+	padding: 0.2em 0.4em;
+	cursor: pointer;
+
+	border: 2px solid var(--violet-blue);
+	border-radius: var(--border-radius);
+	background-color: var(--oxford-blue);
+}
+
+.btn-details > * {
+	pointer-events: none;
+}
+
+.btn-details i {
+	color: var(--violet-blue);
+	transition: transform 250ms ease-out;
+}
+
+.btn-details i.active {
+	transform: rotate(180deg);
 }
 /* -End: Todo instance styles */
 
@@ -610,18 +651,15 @@ input[id="form-dueDate"] {
 	cursor: pointer;
 
 	font-size: 1.4em;
-	border: 2px solid var(--dark-byzantium);
+	border: 2px solid var(--priority-color);
 	border-radius: 50%;
-	transition: all 250ms ease-out;
-}
-
-#form-priority input:hover + label,
-#form-priority input:checked + label {
-	border-color: var(--china-rose);
+	transition: transform 350ms ease-out, background-color 250ms ease-out;
 }
 
 #form-priority input:checked + label {
 	transform: scale(1.1);
+	border-width: 3px;
+	background-color: var(--priority-color);
 }
 
 #form-priority input {
@@ -695,7 +733,7 @@ input[id="form-dueDate"] {
 
 /* Add Todo (Submit Button) */
 .btn-add-todo {
-	padding: 0.2em 1em;
+	padding: 0.2em 1em 0;
 	font-size: 1.2em;
 	line-height: normal;
 	cursor: pointer;
