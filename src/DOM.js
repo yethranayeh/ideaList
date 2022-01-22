@@ -584,7 +584,7 @@ const DOM = {
 		this.newTodoForm.btnClose.classList.toggle("fade-out");
 		this.newTodoBtn.classList.toggle("fade-out");
 	},
-	todos: { list: [], detailsList: [] },
+	todos: { list: [], detailsList: [], checkboxList: [] },
 	/**
 	 * @param {Array} todos An array of todos to display
 	 * @param {Array} filteredIndexes An array of filtered indexes of todos. If provided, only these will be shown [Optional]
@@ -609,29 +609,67 @@ const DOM = {
 			todos = filteredTodos;
 		}
 
+		function appendTo(parent, elementArray) {
+			elementArray.forEach((element) => {
+				parent.appendChild(element);
+			});
+		}
+
 		// For each array element, create a todo container
 		if (todos.length) {
 			for (let todo of todos) {
 				let container = document.createElement("div");
 				container.classList.add("todo");
-
-				function appendTo(parent, elementArray) {
-					elementArray.forEach((element) => {
-						parent.appendChild(element);
-					});
-				}
+				container.setAttribute("data-index", todo.index);
 
 				// Todo Checkbox to mark as completed
-				let todoCheckbox = document.createElement("div");
-				todoCheckbox.classList.add("todo-checkbox");
-				let isComplete = document.createElement("input");
-				isComplete.setAttribute("type", "checkbox");
-				isComplete.disabled = true;
-				if (todo.isComplete) {
-					isComplete.checked = true;
-				}
-				todoCheckbox.appendChild(isComplete);
-				appendTo(container, [todoCheckbox]);
+				// <label class="checkbox path">
+				// 	<input type="checkbox">
+				// 	<svg viewBox="0 0 21 21">
+				// 		<path d="M5,10.75 L8.5,14.25 L19.4,2.3 C18.8333333,1.43333333 18.0333333,1 17,1 L4,1 C2.35,1 1,2.35 1,4 L1,17 C1,18.65 2.35,20 4,20 L17,20 C18.65,20 20,18.65 20,17 L20,7.99769186"></path>
+				// 	</svg>
+				// </label>
+				let todoState = document.createElement("div");
+				todoState.classList.add("todo-state");
+
+				let todoCheckbox = (function () {
+					let checkbox = document.createElement("label");
+					checkbox.classList.add("checkbox", "path");
+
+					let input = document.createElement("input");
+					input.type = "checkbox";
+					input.checked = todo.isComplete;
+					checkbox.appendChild(input);
+
+					let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+					svg.setAttribute("viewBox", "0 0 21 21");
+
+					let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+					path.setAttribute(
+						"d",
+						"M5,10.75 L8.5,14.25 L19.4,2.3 C18.8333333,1.43333333 18.0333333,1 17,1 L4,1 C2.35,1 1,2.35 1,4 L1,17 C1,18.65 2.35,20 4,20 L17,20 C18.65,20 20,18.65 20,17 L20,7.99769186"
+					);
+					svg.appendChild(path);
+
+					checkbox.appendChild(svg);
+
+					DOM.todos.checkboxList.push(checkbox);
+					return checkbox;
+				})();
+
+				// let todoCheckbox = document.createElement("div");
+				// todoCheckbox.classList.add("todo-checkbox");
+				// let isComplete = document.createElement("input");
+				// isComplete.setAttribute("type", "checkbox");
+				// isComplete.disabled = true;
+				// isComplete.checked = todo.isComplete;
+				// todoCheckbox.appendChild(isComplete);
+
+				// let todoDelete = document.createElement("i");
+				// todoDelete.classList.add("btn-delete-todo", "fas", "fa-trash-alt");
+
+				appendTo(todoState, [todoCheckbox]);
+				appendTo(container, [todoState]);
 
 				// Main Content
 				let todoContent = document.createElement("div");

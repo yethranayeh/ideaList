@@ -40,7 +40,22 @@ const App = {
 
 		return todo;
 	},
-	deleteTodo: function (todo) {
+	/**
+	 *
+	 * @param {Number} index Index of the todo that will be updated
+	 * @param {Object} properties New properties of the todo (e.g. { isComplete: true, priority: "!!"})
+	 */
+	updateTodo: function (index, properties) {
+		let todo = App.todoList.all[index];
+		let keys = Object.keys(properties);
+
+		for (let key of keys) {
+			todo[key] = properties[key];
+		}
+
+		App.updateStorageTodoList();
+	},
+	deleteTodo: function (index) {
 		return;
 	},
 	getTodoList: function () {

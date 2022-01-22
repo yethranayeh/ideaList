@@ -22,7 +22,8 @@ const E = {
 	newTagSubmitted: "newTagSubmitted",
 	newTagValid: "newTagValid",
 	newTagInvalid: "newTagInvalid",
-	detailsClicked: "detailsClicked"
+	detailsClicked: "detailsClicked",
+	todoCheckboxClicked: "todoCheckboxClicked"
 };
 
 // Initialize
@@ -267,14 +268,20 @@ DOM.newTodoForm.self.addEventListener("submit", (e) => {
 });
 
 // -Todo details
-DOM.todos.addEventListenerDetails = function () {
+DOM.todos.addEventListener = function () {
 	DOM.todos.detailsList.forEach((btn) => {
 		btn.addEventListener("click", (event) => {
 			PubSub.publish(E.detailsClicked, event.target);
 		});
 	});
+
+	DOM.todos.checkboxList.forEach((checkbox) => {
+		checkbox.addEventListener("click", (event) => {
+			PubSub.publish(E.todoCheckboxClicked, event.target);
+		});
+	});
 };
-DOM.todos.addEventListenerDetails();
+DOM.todos.addEventListener();
 
 // SUBSCRIBE EVENTS
 
@@ -315,7 +322,7 @@ PubSub.subscribe(E.searchFocusOut, () => {
 PubSub.subscribe(E.searchChanged, (event, input) => {
 	let re = new RegExp(`^${input}`, "i");
 	DOM.displayTodos(App.todoList.all, App.getSearchResults(re));
-	DOM.todos.addEventListenerDetails();
+	DOM.todos.addEventListener();
 });
 
 // Filters
@@ -358,7 +365,7 @@ PubSub.subscribe(E.filterClicked, (sender, data) => {
 		DOM.displayTodos(App.todoList["all"]);
 		App.filtered = undefined;
 	}
-	DOM.todos.addEventListenerDetails();
+	DOM.todos.addEventListener();
 });
 
 // New Todo Form
@@ -369,7 +376,7 @@ PubSub.subscribe(E.formSubmitted, () => {
 		DOM.newTodoForm.resetForm();
 		let todo = App.createTodo(inputs);
 		DOM.displayTodos(App.todoList["all"]);
-		DOM.todos.addEventListenerDetails();
+		DOM.todos.addEventListener();
 		DOM.sidebar.populateFilterTags(App.todoList);
 		// Since sidebar filter tags are removed and added again, they lose event listeners.
 		DOM.sidebar.addEventListenerTags();
@@ -403,4 +410,9 @@ PubSub.subscribe(E.detailsClicked, (topic, data) => {
 
 	let info = data.parentNode.parentNode.querySelector(".todo-info");
 	info.classList.toggle("visible");
+});
+
+PubSub.subscribe(E.todoCheckboxClicked, (topic, data) => {
+	let todo = data.parentNode.parentNode.parentNode;
+	App.updateTodo(todo.getAttribute("data-index"), { isComplete: data.checked });
 });
