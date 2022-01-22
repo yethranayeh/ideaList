@@ -343,6 +343,27 @@ main {
 	margin-bottom: 1em;
 }
 
+.todo.fade-out {
+	overflow: hidden;
+	animation: todoFadeOut;
+	animation-timing-function: cubic-bezier(0.83, 0, 0.17, 1);
+	animation-duration: 550ms;
+	animation-fill-mode: forwards;
+}
+
+@keyframes todoFadeOut {
+	from {
+		transform: translateX(0);
+		max-height: var(--height);
+	}
+
+	to {
+		transform: translateX(-130%);
+		max-height: 0;
+		margin: 0;
+	}
+}
+
 .todo-state,
 .todo-main {
 	border: 2px solid var(--violet-blue);
@@ -354,6 +375,7 @@ main {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-evenly;
+	align-items: center;
 	padding: 0 0.5em;
 	border-radius: 1em 0 0 1em;
 	border-right-width: 2px;
@@ -429,7 +451,17 @@ main {
 /* -End: Todo checkbox */
 
 .btn-delete-todo {
-	color: red;
+	display: none;
+	cursor: pointer;
+	color: #de4d4a;
+}
+
+.btn-delete-todo.visible {
+	display: inline-block;
+}
+
+.btn-delete-todo:hover {
+	color: #e03734;
 }
 
 .todo-main {
@@ -500,7 +532,7 @@ main {
 
 .todo-priority {
 	font-weight: bold;
-	padding: 0.2em 1em 0;
+	padding: 0.2em 0.6em 0;
 	color: var(--priority-color);
 	border-radius: var(--border-radius);
 	border: 2px solid var(--priority-color);

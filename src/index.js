@@ -23,7 +23,8 @@ const E = {
 	newTagValid: "newTagValid",
 	newTagInvalid: "newTagInvalid",
 	detailsClicked: "detailsClicked",
-	todoCheckboxClicked: "todoCheckboxClicked"
+	todoCheckboxClicked: "todoCheckboxClicked",
+	deleteBtnClicked: "deleteBtnClicked"
 };
 
 // Initialize
@@ -280,6 +281,12 @@ DOM.todos.addEventListener = function () {
 			PubSub.publish(E.todoCheckboxClicked, event.target);
 		});
 	});
+
+	DOM.todos.deleteBtnsList.forEach((btn) => {
+		btn.addEventListener("click", (event) => {
+			PubSub.publish(E.deleteBtnClicked, event.target);
+		});
+	});
 };
 DOM.todos.addEventListener();
 
@@ -408,11 +415,31 @@ PubSub.subscribe(E.detailsClicked, (topic, data) => {
 	let icon = data.querySelector("i");
 	icon.classList.toggle("active");
 
-	let info = data.parentNode.parentNode.querySelector(".todo-info");
+	let container = data.parentNode.parentNode;
+
+	let info = container.querySelector(".todo-info");
 	info.classList.toggle("visible");
+
+	let btnDelete = container.parentNode.querySelector(".btn-delete-todo");
+	btnDelete.classList.toggle("visible");
 });
 
 PubSub.subscribe(E.todoCheckboxClicked, (topic, data) => {
 	let todo = data.parentNode.parentNode.parentNode;
 	App.updateTodo(todo.getAttribute("data-index"), { isComplete: data.checked });
+});
+
+PubSub.subscribe(E.deleteBtnClicked, (topic, data) => {
+	let todo = data.parentNode.parentNode;
+	// Send actual element height to css before transition so it is smooth.
+	todo.style.cssText = `--height: ${todo.offsetHeight}px`;
+
+	let index = todo.getAttribute("data-index");
+
+	// Play the animation, after it ends remove the todo from everywhere.
+	todo.classList.add("fade-out");
+	todo.addEventListener("animationend", () => {
+		App.deleteTodo(index);
+		DOM.updateIndexes(index);
+	});
 });

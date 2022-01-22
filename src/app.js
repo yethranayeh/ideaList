@@ -56,7 +56,31 @@ const App = {
 		App.updateStorageTodoList();
 	},
 	deleteTodo: function (index) {
-		return;
+		// Find every todo that meets todo.index > index and subtract 1 from their index
+		// So, if index is 2, todos at 3, 4, 5 now become 2, 3, 4
+		// Update both All and tags that contain the index.
+		let todo = App.todoList.all[index];
+		for (let tag of todo.tags) {
+			let tagArr = App.todoList[tag];
+			let tagIndex = tagArr.indexOf(Number(index));
+			tagArr.splice(tagIndex, 1);
+		}
+		App.todoList.all.splice(index, 1);
+		App.assignNewIndexes(index);
+	},
+	assignNewIndexes: function (deletedIndex) {
+		// Starting from deleted index (as it is now replaced by the next Todo in array),
+		// For each todo,
+		// Update its index to n-1 in "All" and in its tag arrays if it has a tag
+		for (let i = deletedIndex; i < App.todoList.all.length; i++) {
+			let todo = App.todoList.all[i];
+			todo.tags.forEach((tag) => {
+				let arr = App.todoList[tag];
+				arr[arr.indexOf(todo.index)]--;
+			});
+			todo.index--;
+		}
+		App.updateStorageTodoList();
 	},
 	getTodoList: function () {
 		let todoList = localStorage.getItem("todoList");
