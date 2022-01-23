@@ -203,7 +203,21 @@ const App = {
 		// if completion filter is provided
 		// compare with undefined since "completed" will be a boolean
 		if (obj.completed != undefined) {
+			let filteredChecked = [];
+			for (let todo of App.todoList.all) {
+				if (todo.isComplete === obj.completed) {
+					filteredChecked.push(todo.index);
+				}
+			}
+			if (filtered.length) {
+				filtered = filteredChecked.filter((value) => {
+					return filtered.includes(value);
+				});
+			} else {
+				filtered = filteredChecked;
+			}
 		}
+		console.log("Filtered after:", filtered);
 
 		// filtered = filtered.length ? filtered : undefined;
 		App.filtered = filtered;

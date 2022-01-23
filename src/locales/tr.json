@@ -13,5 +13,8 @@
 	"checklist": "Yapılacaklar Listesi",
 	"tags": "Etiketler",
 	"btn-add": "Ekle",
-	"details": "Detaylar"
+	"details": "Detaylar",
+	"completion-header": "Durum:",
+	"filter-completed": "Tamamlandı",
+	"filter-in-progress": "Devam Ediyor"
 }

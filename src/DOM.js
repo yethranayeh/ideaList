@@ -198,8 +198,35 @@ const DOM = {
 		}
 		const dateContent = addToSection(dateHeader, dateList);
 		filters.appendChild(dateContent);
-		aside.appendChild(filters);
 		// End: Date Filters
+
+		// Start: Completion Filters
+		const compHeader = document.createElement("h2");
+		compHeader.setAttribute("data-key", "completion-header");
+		const compIcons = ["check", "spinner"];
+		const compKeys = ["completed", "in-progress"];
+		const compList = document.createElement("ul");
+		const comps = [];
+		for (let i = 0; i < compIcons.length; i++) {
+			let li = document.createElement("li");
+			li.classList.add("completion");
+
+			let liIcon = document.createElement("i");
+			liIcon.classList.add("fas", `fa-${compIcons[i]}`);
+			li.appendChild(liIcon);
+
+			let text = document.createElement("span");
+			text.setAttribute("data-key", `filter-${compKeys[i]}`);
+			li.appendChild(text);
+			compList.appendChild(li);
+			comps.push(li);
+		}
+		const compContent = addToSection(compHeader, compList);
+		filters.appendChild(compContent);
+
+		// End: Completion Filters
+
+		aside.appendChild(filters);
 
 		// Change locale
 		const localeSect = document.createElement("form");
@@ -238,6 +265,8 @@ const DOM = {
 			tags: tags,
 			dateList: dateList,
 			dates: dates,
+			compList: compList,
+			comps: comps,
 			langInputs: inputs,
 			populateFilterTags: populateFilterTags
 		};

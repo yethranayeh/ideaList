@@ -13,5 +13,8 @@
 	"checklist": "Checklist",
 	"tags": "Tags",
 	"btn-add": "Add",
-	"details": "Details"
+	"details": "Details",
+	"completion-header": "Status:",
+	"filter-completed": "Completed",
+	"filter-in-progress": "In Progress"
 }

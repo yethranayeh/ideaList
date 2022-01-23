@@ -147,7 +147,7 @@ DOM.navbar.search.input.addEventListener("keydown", (event) => {
 });
 
 // SIDEBAR
-// -All list items (tags and dates)
+// -All list items (tags, dates, completion)
 DOM.sidebar.addEventListenerTags = function () {
 	for (let each of DOM.sidebar.tags) {
 		each.addEventListener("click", (event) => {
@@ -172,7 +172,7 @@ DOM.sidebar.addEventListenerTags = function () {
 				each.classList.toggle("active");
 			}
 
-			PubSub.publish(E.filterClicked);
+			PubSub.publish(E.filterClicked, "tag");
 		});
 	}
 };
@@ -190,6 +190,20 @@ for (let each of DOM.sidebar.dates) {
 		// Toggle "active" class of clicked element
 		each.classList.toggle("active");
 		PubSub.publish(E.filterClicked, "date");
+	});
+}
+
+for (let each of DOM.sidebar.comps) {
+	each.addEventListener("click", () => {
+		DOM.sidebar.comps.forEach((comp) => {
+			if (each != comp) {
+				comp.classList.remove("active");
+			}
+		});
+
+		// Toggle "active" class of clicked element
+		each.classList.toggle("active");
+		PubSub.publish(E.filterClicked, "completion");
 	});
 }
 
@@ -341,14 +355,17 @@ PubSub.subscribe(E.filterClicked, (sender, data) => {
 	let activeDate = actives.filter((value) => {
 		return value.classList.contains("date");
 	});
+	let activeCompletion = actives.filter((value) => {
+		return value.classList.contains("completion");
+	});
 
 	let filter = {};
-	let tags = [];
 
 	if (data === "date" && activeTags.length === 1 && activeTags[0].id === "filterAll") {
 		App.filtered = undefined;
 	}
 
+	let tags = [];
 	activeTags.forEach((tag) => {
 		if (tag.id === "filterAll") {
 			return;
@@ -357,11 +374,22 @@ PubSub.subscribe(E.filterClicked, (sender, data) => {
 		}
 	});
 
+	if (tags.length) {
+		filter.tags = tags;
+	}
+
 	if (activeDate.length) {
 		filter.date = activeDate[0].querySelector("span").getAttribute("data-key");
 	}
-	if (tags.length) {
-		filter.tags = tags;
+
+	if (activeCompletion.length) {
+		let key = activeCompletion[0].querySelector("span").getAttribute("data-key");
+		let prefix = "filter-";
+		if (key === prefix + "completed") {
+			filter.completed = true;
+		} else if (key === prefix + "in-progress") {
+			filter.completed = false;
+		}
 	}
 
 	// If filter has any keys, get the filtered result
