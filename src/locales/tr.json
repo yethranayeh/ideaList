@@ -16,5 +16,7 @@
 	"details": "Detaylar",
 	"completion-header": "Durum:",
 	"filter-completed": "Tamamlandı",
-	"filter-in-progress": "Devam Ediyor"
+	"filter-in-progress": "Devam Ediyor",
+	"todo-no-match": "Yapılacaklar arasında arama kriterlerinize uygun bir öğe bulunamadı",
+	"todo-not-created": "Yapılacaklar listesine henüz bir şey eklenmedi"
 }

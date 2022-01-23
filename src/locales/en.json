@@ -16,5 +16,7 @@
 	"details": "Details",
 	"completion-header": "Status:",
 	"filter-completed": "Completed",
-	"filter-in-progress": "In Progress"
+	"filter-in-progress": "In Progress",
+	"todo-no-match": "A to-do matching your filter criteria could not be found",
+	"todo-not-created": "You have not created any to-do items yet"
 }

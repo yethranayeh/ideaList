@@ -53,9 +53,6 @@ const DOM = {
 		// Display ALL Todos on page initialization
 		this.displayTodos(todoList["all"]);
 	},
-	initInterface: function () {
-		return;
-	},
 	navbar: (function () {
 		const navbar = document.createElement("nav");
 
@@ -805,15 +802,31 @@ const DOM = {
 				this.main.self.appendChild(container);
 			}
 		} else if (filteredIndexes) {
-			// If todos list is empty because of indexes:
+			// If todos list is empty because of there's no match:
+			let container = document.createElement("div");
+			container.classList.add("todo", "info", "no-match");
+
+			let icon = document.createElement("i");
+			icon.classList.add("fas", "fa-times");
+			container.appendChild(icon);
+
 			let p = document.createElement("p");
-			p.textContent = "No entry could be found matching the filter(s)";
-			this.main.self.appendChild(p);
+			p.setAttribute("data-key", "todo-no-match");
+			container.appendChild(p);
+			this.main.self.appendChild(container);
 		} else {
 			// If todos list is empty, because the user did not create any yet:
+			let container = document.createElement("div");
+			container.classList.add("todo", "info", "not-created");
+
+			let icon = document.createElement("i");
+			icon.classList.add("fas", "fa-exclamation-triangle");
+			container.appendChild(icon);
+
 			let p = document.createElement("p");
-			p.textContent = "You have not created any todos yet...";
-			this.main.self.appendChild(p);
+			p.setAttribute("data-key", "todo-not-created");
+			container.appendChild(p);
+			this.main.self.appendChild(container);
 		}
 	}
 };
