@@ -469,5 +469,7 @@ PubSub.subscribe(E.deleteBtnClicked, (topic, data) => {
 	todo.addEventListener("animationend", () => {
 		App.deleteTodo(index);
 		DOM.updateIndexes(index);
+		DOM.sidebar.populateFilterTags(App.todoList);
+		DOM.newTodoForm.populateFormTags(App.todoList);
 	});
 });

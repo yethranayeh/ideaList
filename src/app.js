@@ -62,8 +62,15 @@ const App = {
 		let todo = App.todoList.all[index];
 		for (let tag of todo.tags) {
 			let tagArr = App.todoList[tag];
-			let tagIndex = tagArr.indexOf(Number(index));
-			tagArr.splice(tagIndex, 1);
+			// If tag array contains more than the one currently being deleted, only delete current Todo
+			if (tagArr.length > 1) {
+				let tagIndex = tagArr.indexOf(Number(index));
+				tagArr.splice(tagIndex, 1);
+			} else {
+				// If the tag array only contains the current Todo, delete the tag completely.
+				delete App.todoList[tag];
+				App.updateStorageTodoList();
+			}
 		}
 		App.todoList.all.splice(index, 1);
 		App.assignNewIndexes(index);
@@ -217,7 +224,6 @@ const App = {
 				filtered = filteredChecked;
 			}
 		}
-		console.log("Filtered after:", filtered);
 
 		// filtered = filtered.length ? filtered : undefined;
 		App.filtered = filtered;
