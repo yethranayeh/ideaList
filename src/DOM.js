@@ -95,7 +95,14 @@ const DOM = {
 			const form = document.createElement("form");
 			form.setAttribute("name", "search");
 
+			const label = document.createElement("label");
+			label.setAttribute("for", "search");
+			label.setAttribute("data-key", "search");
+			label.classList.add("sr-only");
+			form.appendChild(label);
+
 			const input = document.createElement("input");
+			input.id = "search";
 			input.classList.add("input");
 			input.setAttribute("type", "text");
 			input.setAttribute("name", "txt");
