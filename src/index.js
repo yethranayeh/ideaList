@@ -242,6 +242,19 @@ DOM.newTodoForm.btnClose.addEventListener("click", (e) => {
 	DOM.newTodoElementsToggle();
 });
 
+// Optional inputs
+DOM.newTodoForm.self.querySelectorAll("input:optional").forEach((input) => {
+	input.addEventListener("input", (event) => {
+		if (event.target.value.length > 0) {
+			if (!event.target.classList.contains("input-received")) {
+				event.target.classList.add("input-received");
+			}
+		} else if (event.target.value.length < 1) {
+			event.target.classList.remove("input-received");
+		}
+	});
+});
+
 // -Toggle visibility of tags
 DOM.newTodoForm.btnShowTags.addEventListener("click", () => {
 	let container = DOM.newTodoForm.self.querySelector("#form-tags");

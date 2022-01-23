@@ -804,7 +804,7 @@ const DOM = {
 		} else if (filteredIndexes) {
 			// If todos list is empty because of there's no match:
 			let container = document.createElement("div");
-			container.classList.add("todo", "info", "no-match");
+			container.classList.add("todo", "info", "no-match", "disable-select");
 
 			let icon = document.createElement("i");
 			icon.classList.add("fas", "fa-times");
@@ -817,7 +817,7 @@ const DOM = {
 		} else {
 			// If todos list is empty, because the user did not create any yet:
 			let container = document.createElement("div");
-			container.classList.add("todo", "info", "not-created");
+			container.classList.add("todo", "info", "not-created", "disable-select");
 
 			let icon = document.createElement("i");
 			icon.classList.add("fas", "fa-exclamation-triangle");

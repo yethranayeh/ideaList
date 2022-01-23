@@ -734,7 +734,8 @@ input[id="form-dueDate"] {
 	border-bottom-color: transparent;
 }
 
-.new-todo__form input:optional:focus {
+.new-todo__form input:optional:focus,
+.new-todo__form input.input-received:optional {
 	transform: scaleX(100%);
 	max-height: 3em;
 	border-bottom-color: var(--china-rose);
@@ -749,8 +750,7 @@ input[id="form-dueDate"] {
 
 #form-description:focus + .label > .add-optional-input,
 #form-notes:focus + .label > .add-optional-input,
-#form-checklist:focus + .label > .add-optional-input,
-.input-received {
+#form-checklist:focus + .label > .add-optional-input {
 	font-size: 0;
 }
 
