@@ -389,6 +389,9 @@ const DOM = {
 
 			let pseuodTable = document.createElement("div");
 			pseuodTable.classList.add("pseudo-table");
+			if (element === "checklist") {
+				pseuodTable.classList.add("d-none");
+			}
 
 			input.id = id;
 			label.classList.add("label", "disable-select");

@@ -53,6 +53,10 @@ body {
 	user-select: none;
 }
 
+.d-none {
+	display: none !important;
+}
+
 /* End: General */
 
 /* Navbar */
@@ -689,7 +693,7 @@ main {
 	width: 100%;
 	text-align: center;
 	border-collapse: separate;
-	border-spacing: 0 0.2em;
+	border-spacing: 0 0.4em;
 }
 
 .new-todo__form .label {
