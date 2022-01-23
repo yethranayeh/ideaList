@@ -272,6 +272,19 @@ DOM.newTodoForm.newTag.btn.addEventListener("click", (event) => {
 	}
 });
 
+// -Tag Selection
+DOM.newTodoForm.self
+	.querySelector("#form-tags")
+	.querySelectorAll("input")
+	.forEach((input) => {
+		input.addEventListener("click", () => {
+			let checked = input.parentNode.querySelectorAll("input:checked").length;
+			if (checked > 3) {
+				input.checked = false;
+			}
+		});
+	});
+
 // -Submit new Todo form
 DOM.newTodoForm.btnAdd.addEventListener("click", (e) => {
 	PubSub.publish(E.formSubmitted);
