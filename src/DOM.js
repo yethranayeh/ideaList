@@ -699,7 +699,7 @@ const DOM = {
 
 				// Start: Todo subtext
 				let subtext = document.createElement("div");
-				subtext.classList.add("todo-subtext");
+				subtext.classList.add("todo-subtext", "disable-select");
 
 				// -Priority
 				const prioColors = { "-": "var(--dark-gray)", "!": "#3f73d5", "!!": "#e18701", "!!!": "#de4d4a" };
@@ -725,38 +725,41 @@ const DOM = {
 				// Start: Details button
 				let btnDetails = document.createElement("div"); // Empty div
 				// If Todo contains any details, create button. Else, leave it as empty div.
-				if (todo.description || todo.notes || todo.checklist || (todo.tags && todo.tags.length)) {
-					btnDetails.classList.add("btn-details");
+				btnDetails.classList.add("btn-details");
 
-					let detailsTxt = document.createElement("span");
-					detailsTxt.setAttribute("data-key", "details");
-					detailsTxt.textContent = getLocale() === "en" ? "Details" : "Detaylar";
-					btnDetails.appendChild(detailsTxt);
+				let detailsTxt = document.createElement("span");
+				detailsTxt.setAttribute("data-key", "details");
+				detailsTxt.textContent = getLocale() === "en" ? "Details" : "Detaylar";
+				btnDetails.appendChild(detailsTxt);
 
-					let detailsIcon = document.createElement("i");
-					detailsIcon.classList.add("fas", "fa-chevron-down");
-					btnDetails.appendChild(detailsIcon);
-					DOM.todos.detailsList.push(btnDetails);
-				}
+				let detailsIcon = document.createElement("i");
+				detailsIcon.classList.add("fas", "fa-chevron-down");
+				btnDetails.appendChild(detailsIcon);
+				DOM.todos.detailsList.push(btnDetails);
+
 				// End: Details button
 
-				let todoTags = document.createElement("ul");
-				todoTags.classList.add("tags");
-				todo.tags.forEach((tag) => {
-					let li = document.createElement("li");
-					li.classList.add("tag");
+				// Start: Tags
+				if (todo.tags.length) {
+					let todoTags = document.createElement("ul");
+					todoTags.classList.add("tags", "disable-select");
+					todo.tags.forEach((tag) => {
+						let li = document.createElement("li");
+						li.classList.add("tag");
 
-					let icon = document.createElement("i");
-					icon.classList.add("fas", "fa-hashtag");
-					li.appendChild(icon);
+						let icon = document.createElement("i");
+						icon.classList.add("fas", "fa-hashtag");
+						li.appendChild(icon);
 
-					let text = document.createElement("span");
-					text.textContent = tag;
-					li.appendChild(text);
+						let text = document.createElement("span");
+						text.textContent = tag;
+						li.appendChild(text);
 
-					todoTags.appendChild(li);
-				});
-				infoContainer.appendChild(todoTags);
+						todoTags.appendChild(li);
+					});
+					infoContainer.appendChild(todoTags);
+				}
+				// End: Tags
 
 				appendTo(subtext, [priority, btnDetails, due]);
 
