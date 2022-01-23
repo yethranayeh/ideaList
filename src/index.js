@@ -10,6 +10,22 @@ import trLocale from "./locales/tr.json";
 import App from "./app.js";
 import DOM from "./DOM.js";
 
+// Service worker
+if ("serviceWorker" in navigator) {
+	window.addEventListener("load", () => {
+		navigator.serviceWorker
+			.register("./sw.js")
+			.then((registration) => {
+				// service worker registered
+			})
+			.catch((err) => {
+				// registration unsuccessful
+			});
+	});
+} else {
+	console.log(`Service worker is not supported in this browser.`);
+}
+
 // Event names
 const E = {
 	hamClicked: "hamClicked",

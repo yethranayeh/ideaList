@@ -1,14 +1,14 @@
 {
 	"name": "todo-list",
 	"version": "1.0.0",
-	"description": "",
+	"description": "A Todo List Application",
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"build": "webpack",
 		"watch": "webpack --watch"
 	},
-	"author": "",
+	"author": "yethranayeh",
 	"license": "ISC",
 	"devDependencies": {
 		"css-loader": "^6.5.1",
