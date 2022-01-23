@@ -1,7 +1,7 @@
 {
-	"name": "todo-list",
+	"name": "idealist",
 	"version": "1.0.0",
-	"description": "A Todo List Application",
+	"description": "ideaList is a to-do list application",
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",

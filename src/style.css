@@ -6,7 +6,6 @@
 	--china-rose: #a24b68;
 	--dark-byzantium: #53294c;
 	--russian-violet: #411462;
-	--dark-violet: #9016d2;
 	--purpureus: #924cac;
 	--violet-blue: #3b4eba;
 	--oxford-blue: #121e41;
@@ -267,6 +266,19 @@ aside li.active i,
 	color: var(--light-gray);
 }
 /* End: List item icon & tag element icon */
+
+/* Logo */
+aside > section {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+aside > section img {
+	margin-bottom: 1em;
+	max-width: 15em;
+	height: auto;
+}
 
 /* -Language Switch */
 

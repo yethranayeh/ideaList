@@ -5,6 +5,7 @@ import { Turkish } from "flatpickr/dist/l10n/tr.js";
 require("flatpickr/dist/themes/dark.css");
 import format from "date-fns/format";
 import { enUS, tr } from "date-fns/locale";
+import Logo from "./icons/logo.svg";
 
 export { DOM as default };
 
@@ -228,6 +229,12 @@ const DOM = {
 
 		aside.appendChild(filters);
 
+		// Logo
+		let logo = document.createElement("img");
+		logo.src = Logo;
+		logo.alt = "ideaList";
+		logo.loading = "lazy";
+
 		// Change locale
 		const localeSect = document.createElement("form");
 		localeSect.classList.add("locale-select");
@@ -257,7 +264,7 @@ const DOM = {
 			localeSect.appendChild(labelElement);
 		}
 
-		aside.appendChild(addToSection(localeSect));
+		aside.appendChild(addToSection(logo, localeSect));
 
 		return {
 			self: aside,
