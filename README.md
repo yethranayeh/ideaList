@@ -4,6 +4,8 @@
 
 Welcome to **ideaList** repo! 🙋‍♂️
 
+![cover](https://i.ibb.co/3sSmtdx/cover.png)
+
 **ideaList** is my to-do list project for The Odin Project [Todo List assignment](https://www.theodinproject.com/paths/full-stack-javascript/courses/javascript/lessons/todo-list). The application is designed with a _mobile first approach_, so there may be visual discrepancies on larger screens, which will be updated in due time.
 
 ## Technologies Used
