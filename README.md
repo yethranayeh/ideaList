@@ -17,6 +17,9 @@ Welcome to **ideaList** repo! 🙋‍♂️
 
 ## Features
 
+_Lighthouse Mobile Report_
+![Lighthouse Mobile Report](https://i.ibb.co/8gSpLhp/idea-List-lighthouse-mobile-report.png)
+
 1. 📱 Progressive Web Application: **ideaList** is designed primarily for mobile devices,
    - It can be installed to the home page of your device like a native application downloaded from the store.
    - In addition, once the app is installed to the home screen, it can be used _without_ any internet connection.
