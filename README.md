@@ -29,6 +29,7 @@ _Lighthouse Mobile Report_
 
 ## App Limitations
 
+- Though it is natural for any time-based applications to have notifications to remind the user of the upcoming events, this is a tricky problem to solve for Progressive Web Applications as they are not native mobile applications. At this time, push notifications for desktop browser and `Android` seem achievable, however for `iOS` devices it does not seem possible.
 - Max amount of tags that can be selected for a Todo is 3.
 - Max character length for a new tag is 16.
 
@@ -38,6 +39,7 @@ _These features may or may not be implemented in the future versions of the app.
 
 - Checklists for todos
 - Sorting by date/priority/alphabetical order.
+- Push notification reminders for Desktop browsers and Android devices
 
 ## Known Issues
 
