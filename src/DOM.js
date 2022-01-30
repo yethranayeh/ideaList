@@ -328,7 +328,7 @@ const DOM = {
 			let input = document.createElement("input");
 
 			if (element === "title") {
-				input.pattern = "^[a-zA-Z1-9].*";
+				input.pattern = "^[\\p{N}+|\\p{L}+].*";
 				input.required = true;
 				input.title = "No whitespace at the beginning";
 			} else if (element === "dueDate") {
@@ -822,6 +822,10 @@ const DOM = {
 
 			let p = document.createElement("p");
 			p.setAttribute("data-key", "todo-no-match");
+			p.textContent =
+				getLocale() === "en"
+					? "A to-do matching your filter criteria could not be found"
+					: "Arama kriterlerinize uygun bir öğe bulunamadı";
 			container.appendChild(p);
 			this.main.self.appendChild(container);
 		} else {
