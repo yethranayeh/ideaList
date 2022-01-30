@@ -681,9 +681,9 @@ main {
 .new-todo.active {
 	/* --max-height is a JavaScript calculated height of the object + some extra pixels to play it safe */
 	max-height: var(--max-height);
-	padding: 1em 2em;
+	padding: 1em 1.2em;
 	transform: scale(1);
-	overflow: scroll;
+	overflow: auto;
 }
 
 .new-todo__form {
